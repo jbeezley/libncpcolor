@@ -30,16 +30,7 @@ bool LookupTable::readData(const string& fileName) {
 	return true;
 }
 
-template <typename T>
-bool LookupTable::makePColor(const size_t n, const T TArray[], uint8_t PArray[]) const {
+bool LookupTable::makePColor(const size_t n, const uint8_t TArray[], uint8_t PArray[]) const {
 	return true;
 }
 
-template bool LookupTable::makePColor(const size_t, const float [], uint8_t []) const;
-template bool LookupTable::makePColor(const size_t, const double [], uint8_t []) const;
-template bool LookupTable::makePColor(const size_t, const short [], uint8_t []) const;
-template bool LookupTable::makePColor(const size_t, const int [], uint8_t []) const;
-template bool LookupTable::makePColor(const size_t, const long [], uint8_t []) const;
-template bool LookupTable::makePColor(const size_t, const unsigned short [], uint8_t []) const;
-template bool LookupTable::makePColor(const size_t, const unsigned int [], uint8_t []) const;
-template bool LookupTable::makePColor(const size_t, const unsigned long [], uint8_t []) const;

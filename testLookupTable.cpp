@@ -13,7 +13,7 @@ int main() {
 	string dirname("luts");
 	int hasError = 0;
 
-	float A[100];
+	uint8_t A[100];
 	uint8_t B[100];
 
 	dp = opendir(dirname.c_str());

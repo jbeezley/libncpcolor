@@ -16,8 +16,7 @@ public:
 	void setData(const uint8_t lutData[]);
 	bool readData(const string& fileName);
 		
-	template <typename T>
-	bool makePColor(const size_t n, const T TArray[], uint8_t PArray[]) const;
+	bool makePColor(const size_t n, const uint8_t TArray[], uint8_t PArray[]) const;
 private:
 	static const unsigned int LUTROWS = 256,
 				              LUTCOLORS = 3,
