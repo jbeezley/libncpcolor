@@ -12,9 +12,10 @@ int main() {
     DIR *dp;
     string dirname("luts");
     int hasError = 0;
-
-    uint8_t A[100];
-    uint8_t B[100];
+   
+    const size_t N = 100;
+    uint8_t A[N];
+    uint8_t B[LookupTable::imageSize(N)];
 
     dp = opendir(dirname.c_str());
     if (dp == NULL) {

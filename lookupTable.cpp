@@ -30,7 +30,11 @@ bool LookupTable::readData(const string& fileName) {
     return true;
 }
 
-bool LookupTable::makePColor(const size_t n, const uint8_t TArray[], uint8_t PArray[]) const {
-    return true;    
+void LookupTable::makePColor(const size_t N, const uint8_t TArray[], uint8_t PArray[]) const {
+    for(size_t i=0; i<N; i++) {
+        PArray[i*pixelSize() + LUT_RED]   = lut_r[TArray[i]]; 
+        PArray[i*pixelSize() + LUT_GREEN] = lut_g[TArray[i]];
+        PArray[i*pixelSize() + LUT_BLUE]  = lut_b[TArray[i]];
+    }
 }
 

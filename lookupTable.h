@@ -10,17 +10,11 @@ using namespace std;
 
 class LookupTable {
 
-public:
-    LookupTable();
-    
-    void setData(const uint8_t lutData[]);
-    bool readData(const string& fileName);
-        
-    bool makePColor(const size_t n, const uint8_t TArray[], uint8_t PArray[]) const;
 private:
     static const unsigned int LUTROWS = 256,
                               LUTCOLORS = 3,
-                              LUTSIZE = LUTROWS * LUTCOLORS;
+                              LUTSIZE = LUTROWS * LUTCOLORS,
+                              PIXELELEMENTS = 4;
     static const unsigned int LUT_RED = 0, 
                               LUT_GREEN = 1,
                               LUT_BLUE = 2;
@@ -33,6 +27,17 @@ private:
 
     // Flag if data is set yet.
     bool initialized;
+
+public:
+    LookupTable();
+    
+    static size_t pixelSize() { return PIXELELEMENTS; }
+    static size_t imageSize(const size_t N) { return pixelSize() * N; }
+
+    void setData(const uint8_t lutData[]);
+    bool readData(const string& fileName);
+     
+    void makePColor(const size_t N, const uint8_t TArray[], uint8_t PArray[]) const;
 };
 
 #endif
