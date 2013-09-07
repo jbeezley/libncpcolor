@@ -1,0 +1,9 @@
+*.o
+*.exe
+.DS_Store
+.DS_Store?
+.*.swp
+.Spotlight*
+Thumbs.db
+.Trashes
+.
