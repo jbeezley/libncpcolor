@@ -21,7 +21,7 @@ int main() {
     s1[0] = 4;
     s1[1] = 5;
     cout << "Shape: " << shape[0] << " " << shape[1] << endl;
-    size_t start[4], count[4];
+    long start[4], count[4];
     s1.getStart(start);
     s1.getCount(count);
     cout << "Start: " << start[0] << " " << start[1] << endl;

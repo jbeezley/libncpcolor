@@ -6,6 +6,9 @@
 #include<vector>
 #include<netcdfcpp.h>
 #include<cassert>
+#include<string>
+#include<map>
+#include<typeinfo>
 
 using namespace std;
 
@@ -40,33 +43,78 @@ public:
     unsigned int yDim() const { return _yDim; }
     shapeType shape() const { return _shape; }
 
-    void getStart(size_t* start) const;
-    void getCount(size_t* count) const;
+    void getStart(long* start) const;
+    void getCount(long* count) const;
     bool doTranspose() const { return xDim() < yDim(); }
 };
 
-template<typename T>
-class Variable {
-private:
+class BaseVariable {
+protected:
     NcVar *_var;
-    Variable() { _var=NULL; }
+    NcVar* var() const { return _var; }
+    BaseVariable() { _var=NULL; }
 
 public:
     typedef SliceType sliceType;
     typedef sliceType::shapeType shapeType;
 
-    Variable(NcVar *var) : _var(var) {}
-    Variable(const Variable& v) : _var(v._var) {}
+    BaseVariable(NcVar *var) : _var(var) {}
+    BaseVariable(const BaseVariable& v) : _var(v._var) {}
+    
+    virtual string myType() const { return (string) "void"; }
 
-    unsigned int nDims() const;
+    unsigned int nDims() const {return var()->num_dims();}
+    string dimName(int i) const {return (string) var()->get_dim(i)->name(); }
     shapeType shape() const;
     size_t size() const;
-
     size_t sliceSize(const sliceType& slice) const;
-    T* allocArrayForSlice(const sliceType& slice) const {return new T[sliceSize(slice)];}
-    void deAllocArray(T* a) const {if(a) delete [] a;}
+    string name() const { return (string) var()->name(); }
 
-    bool readSlice(const sliceType& slice, T* a) ; // can't be const because of NcVar interface
+    virtual bool readSlice(const sliceType& slice, void* a) const {}
 };
+
+template<typename T>
+class Variable : public BaseVariable {
+public:
+    typedef T varType;
+
+    Variable(NcVar *var) : BaseVariable(var) {}
+    Variable(const BaseVariable& v) : BaseVariable(v) {}
+    
+    virtual string myType() const { return (string) typeid(T).name(); }
+
+    bool readSlice(const sliceType& slice, T* a) const;
+};
+
+typedef Variable<float> VariableFloat;
+typedef Variable<double> VariableDouble;
+typedef Variable<int> VariableInt;
+typedef Variable<long> VariableLong;
+typedef Variable<short> VariableShort;
+typedef Variable<ncbyte> VariableByte;
+
+class NcSliceFile {
+public:
+    typedef map<string, BaseVariable*> variableMapType;
+private:
+    const NcFile _file;
+    const string _fileName;
+    variableMapType _variables;
+
+    NcSliceFile() : _file("") { assert(0); } // should never be called
+
+    static bool canDisplay(const NcVar* var);
+public:
+    
+    NcSliceFile(const string& fileName);
+    NcSliceFile(const NcSliceFile& file);
+    ~NcSliceFile();
+    const variableMapType& variables() const { return _variables; }
+    string fileName() const { return _fileName; }
+
+};
+
+ostream& operator<<(ostream& out, const BaseVariable& var);
+ostream& operator<<(ostream& out, const NcSliceFile& file);
 
 #endif

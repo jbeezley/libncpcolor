@@ -1,7 +1,7 @@
 
 #include "ncFileReader.h"
 
-void SliceType::getStart(size_t* start) const {
+void SliceType::getStart(long* start) const {
     assert (isValid());
     for(unsigned int i=0; i<size(); i++) {
         if(i == xDim())
@@ -13,7 +13,7 @@ void SliceType::getStart(size_t* start) const {
     }
 }
 
-void SliceType::getCount(size_t* count) const {
+void SliceType::getCount(long* count) const {
     assert (isValid());
     for(unsigned int i=0; i<size(); i++) {
         if(i == xDim())
@@ -23,4 +23,118 @@ void SliceType::getCount(size_t* count) const {
         else
             count[i] = 1;
     }
+}
+
+template class Variable<float>;
+template class Variable<double>;
+template class Variable<int>;
+template class Variable<long>;
+template class Variable<short>;
+template class Variable<ncbyte>;
+
+BaseVariable::shapeType BaseVariable::shape() const {
+    shapeType s(nDims());
+    for(unsigned int i=0; i<nDims(); i++) s[i] = var()->get_dim(i)->size();
+    return s;
+}
+
+size_t BaseVariable::size() const {
+    shapeType s = shape();
+    size_t n=1; 
+    for(unsigned int i=0; i<nDims(); i++) n = n*s[i];
+    return n;
+}
+
+size_t BaseVariable::sliceSize(const BaseVariable::sliceType& slice) const {
+    long count[nDims()];
+    slice.getCount(count);
+    size_t N=1;
+    for(unsigned int i=0; i<nDims(); i++) N = N*count[i];
+    return N;
+}
+
+template<typename T>
+bool Variable<T>::readSlice(const Variable<T>::sliceType& slice, T* a) const {
+    long count[nDims()], start[nDims()];
+    var()->set_cur(start);
+    var()->get(a, count); 
+}
+
+NcSliceFile::NcSliceFile(const string& fileName) : _file(fileName.c_str()), _fileName(fileName) {
+    for(int i = 0; i<_file.num_vars(); i++) {
+        NcVar *var = _file.get_var(i);
+        if(canDisplay(var)) {
+            NcType type = var->type();
+            BaseVariable *baseVar;
+            string name(var->name());
+            if(type == ncByte)
+                baseVar = new VariableByte(var);
+            else if(type == ncInt)
+                baseVar = new VariableInt(var);
+            else if(type == ncLong)
+                baseVar = new VariableLong(var);
+            else if(type == ncFloat)
+                baseVar = new VariableFloat(var);
+            else if(type == ncDouble)
+                baseVar = new VariableDouble(var);
+            _variables[name] = baseVar;
+        }
+    }
+}
+
+NcSliceFile::NcSliceFile(const NcSliceFile& file) : _file(file._fileName.c_str()), _fileName(file._fileName) {
+    for(int i = 0; i<_file.num_vars(); i++) {
+        NcVar *var = _file.get_var(i);
+        if(canDisplay(var)) {
+            NcType type = var->type();
+            BaseVariable *baseVar;
+            string name(var->name());
+            if(type == ncByte)
+                baseVar = new VariableByte(var);
+            else if(type == ncInt)
+                baseVar = new VariableInt(var);
+            else if(type == ncLong)
+                baseVar = new VariableLong(var);
+            else if(type == ncFloat)
+                baseVar = new VariableFloat(var);
+            else if(type == ncDouble)
+                baseVar = new VariableDouble(var);
+            _variables[name] = baseVar;
+        }
+    }
+}
+
+NcSliceFile::~NcSliceFile() {
+    for(variableMapType::iterator var=_variables.begin(); var!=_variables.end(); ++var)
+        delete var->second;
+}
+
+bool NcSliceFile::canDisplay(const NcVar* var) {
+    NcType type = var->type();
+    int nDims = var->num_dims();
+
+    return ( (nDims >= 2) && (
+             (type == ncByte)  ||
+             (type == ncShort) ||
+             (type == ncInt)   ||
+             (type == ncLong)  ||
+             (type == ncFloat) ||
+             (type == ncDouble) ) );
+}
+
+ostream& operator<<(ostream& out, const BaseVariable& var) {
+    out << var.myType() << " " << var.name() << "[";
+    if(var.nDims() > 0) out << var.shape()[0];
+    for(int i = 1; i<var.nDims(); i++) out << ", " << var.shape()[i];
+    out << "]";
+    return out;
+}
+ostream& operator<<(ostream& out, const NcSliceFile& file) {
+out << file.fileName() << " {" << endl;
+for(NcSliceFile::variableMapType::const_iterator it=file.variables().begin();
+    it != file.variables().end(); ++it) {
+    out << "  " << *it->second << endl;
+}
+out << "}" << endl;
+return out;
 }
