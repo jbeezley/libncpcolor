@@ -56,8 +56,11 @@ size_t BaseVariable::sliceSize(const BaseVariable::sliceType& slice) const {
 template<typename T>
 bool Variable<T>::readSlice(const Variable<T>::sliceType& slice, T* a) const {
     long count[nDims()], start[nDims()];
+    slice.getStart(start);
+    slice.getCount(count);
     var()->set_cur(start);
     var()->get(a, count); 
+    return true;
 }
 
 NcSliceFile::NcSliceFile(const string& fileName) : _file(fileName.c_str()), _fileName(fileName) {
@@ -129,6 +132,7 @@ ostream& operator<<(ostream& out, const BaseVariable& var) {
     out << "]";
     return out;
 }
+
 ostream& operator<<(ostream& out, const NcSliceFile& file) {
 out << file.fileName() << " {" << endl;
 for(NcSliceFile::variableMapType::const_iterator it=file.variables().begin();
@@ -137,4 +141,29 @@ for(NcSliceFile::variableMapType::const_iterator it=file.variables().begin();
 }
 out << "}" << endl;
 return out;
+}
+
+ostream& operator<<(ostream& out, const SliceType& slice) {
+    out << "[";
+    for(int i = 0; i< slice.size(); i++) {
+        if(i == slice.xDim() || i == slice.yDim()) {
+            out << "0:" << slice.shape()[i];
+        }
+        else {
+            out << slice[i];
+        }
+        if(i<slice.size() - 1) out << ", ";
+    }
+    out << "]";
+    return out;
+}
+
+ostream& operator<<(ostream& out, const SliceType::shapeType& shape) {
+    out << "[";
+    for(int i = 0; i<shape.size(); i++) {
+        out << shape[i];
+        if(i<shape.size() - 1) out << ", ";
+    }
+    out << "]";
+    return out;
 }

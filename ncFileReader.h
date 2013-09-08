@@ -69,8 +69,9 @@ public:
     size_t size() const;
     size_t sliceSize(const sliceType& slice) const;
     string name() const { return (string) var()->name(); }
+    sliceType defaultSlice() const { return sliceType(shape()); }
 
-    virtual bool readSlice(const sliceType& slice, void* a) const {}
+    virtual bool readSlice(const sliceType& slice, void* a) const = 0;//{ cout << "Base slice called\n"; return false; }
 };
 
 template<typename T>
@@ -82,8 +83,9 @@ public:
     Variable(const BaseVariable& v) : BaseVariable(v) {}
     
     virtual string myType() const { return (string) typeid(T).name(); }
-
-    bool readSlice(const sliceType& slice, T* a) const;
+    
+    virtual bool readSlice(const sliceType& slice, void* a) const { return readSlice(slice, (T*) a); }
+    virtual bool readSlice(const sliceType& slice, T* a) const;
 };
 
 typedef Variable<float> VariableFloat;
@@ -116,5 +118,7 @@ public:
 
 ostream& operator<<(ostream& out, const BaseVariable& var);
 ostream& operator<<(ostream& out, const NcSliceFile& file);
+ostream& operator<<(ostream& out, const SliceType::shapeType& shape);
+ostream& operator<<(ostream& out, const SliceType& slice);
 
 #endif
