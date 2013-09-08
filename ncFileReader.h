@@ -71,7 +71,7 @@ public:
     string name() const { return (string) var()->name(); }
     sliceType defaultSlice() const { return sliceType(shape()); }
 
-    virtual bool readSlice(const sliceType& slice, void* a) const = 0;//{ cout << "Base slice called\n"; return false; }
+    virtual bool readSlice(const sliceType& slice, void*& a) const = 0;//{ cout << "Base slice called\n"; return false; }
 };
 
 template<typename T>
@@ -84,8 +84,8 @@ public:
     
     virtual string myType() const { return (string) typeid(T).name(); }
     
-    virtual bool readSlice(const sliceType& slice, void* a) const { return readSlice(slice, (T*) a); }
-    virtual bool readSlice(const sliceType& slice, T* a) const;
+    virtual bool readSlice(const sliceType& slice, void*& a) const;// { return readSlice(slice, (T*) a); }
+    //virtual bool readSlice(const sliceType& slice, T*& a) const;
 };
 
 typedef Variable<float> VariableFloat;

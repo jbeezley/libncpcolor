@@ -54,12 +54,14 @@ size_t BaseVariable::sliceSize(const BaseVariable::sliceType& slice) const {
 }
 
 template<typename T>
-bool Variable<T>::readSlice(const Variable<T>::sliceType& slice, T* a) const {
+bool Variable<T>::readSlice(const Variable<T>::sliceType& slice, void*& a) const {
     long count[nDims()], start[nDims()];
+    if(a) delete [] (T*) a;
+    a = new T [ sliceSize(slice) ];
     slice.getStart(start);
     slice.getCount(count);
     var()->set_cur(start);
-    var()->get(a, count); 
+    var()->get((T*) a, count); 
     return true;
 }
 
