@@ -71,11 +71,13 @@ public:
     string name() const { return (string) var()->name(); }
     sliceType defaultSlice() const { return sliceType(shape()); }
 
-    virtual bool readSlice(const sliceType& slice, void*& a) const = 0;//{ cout << "Base slice called\n"; return false; }
+    virtual bool readSlice(const sliceType& slice, void*& a) const = 0;
 };
 
 template<typename T>
 class Variable : public BaseVariable {
+private:
+    virtual void transpose(const sliceType& slice, T* A) const;
 public:
     typedef T varType;
 

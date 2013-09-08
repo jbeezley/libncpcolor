@@ -1,10 +1,9 @@
-
+DEBUG=-fbounds-check -g
 %.o: %.cpp
-	g++ -c $<
+	g++ -c $(DEBUG) $<
 
 %.exe: %.o
-	g++ -o $@ $^ -lnetcdf_c++ -lnetcdf
-
+	g++ $(DEBUG) -o $@ $^ -lnetcdf_c++ -lnetcdf
 
 test: testLookupTable testNorm testSlice testNcFileReader
 

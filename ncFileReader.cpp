@@ -61,8 +61,25 @@ bool Variable<T>::readSlice(const Variable<T>::sliceType& slice, void*& a) const
     slice.getStart(start);
     slice.getCount(count);
     var()->set_cur(start);
-    var()->get((T*) a, count); 
+    var()->get((T*) a, count);
+    transpose(slice, (T*) a);
     return true;
+}
+
+template<typename T>
+void Variable<T>::transpose(const sliceType& slice, T* A) const {
+    if(slice.doTranspose())
+    {
+        T tmp;
+        const size_t ny = shape()[slice.yDim()];
+        const size_t nx = shape()[slice.xDim()];
+        for(size_t i=0; i<slice.yDim(); i++)
+            for(size_t j=0; j<slice.xDim(); j++) {
+                tmp = A[i*nx + j];
+                A[i*nx + j] = A[j*ny + i];
+                A[j*ny + i] = tmp;
+            }
+    }
 }
 
 NcSliceFile::NcSliceFile(const string& fileName) : _file(fileName.c_str()), _fileName(fileName) {
