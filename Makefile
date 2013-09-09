@@ -1,9 +1,13 @@
-DEBUG=-fbounds-check -g
+DEBUG=-O2 #-fbounds-check -g
 %.o: %.cpp
 	g++ -c $(DEBUG) $<
 
 %.exe: %.o
-	g++ $(DEBUG) -o $@ $^ -lnetcdf_c++ -lnetcdf
+	g++ $(DEBUG) -o $@ $^ -lnetcdf
+
+libncpcolor.a: lookupTable.o ncFileReader.o netcdf.o ncvalues.o
+	ar rcs $@ $^
+	ranlib $@
 
 test: testLookupTable testNorm testSlice testNcFileReader
 
@@ -27,9 +31,12 @@ testLookupTable.exe: testLookupTable.o lookupTable.o
 testNorm.o: testNorm.cpp norm.h
 testNorm.exe: testNorm.o
 testSlice.o: testSlice.cpp ncFileReader.h
-testSlice.exe: testSlice.o ncFileReader.o
+testSlice.exe: testSlice.o ncFileReader.o netcdf.o ncvalues.o
+ncFileReader.h: netcdfCompat.h ncvaluesCompat.h
 testNcFileReader.o: testNcFileReader.cpp ncFileReader.h
-testNcFileReader.exe: testNcFileReader.o ncFileReader.o
+testNcFileReader.exe: testNcFileReader.o ncFileReader.o netcdf.o ncvalues.o
+netcdf.o: netcdf.cpp netcdfCompat.h
+ncvalues.o: ncvalues.cpp ncvaluesCompat.h
 
 clean:
-	rm -f *.o *.exe
+	rm -f *.o *.exe *.a
