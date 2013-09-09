@@ -1,14 +1,17 @@
 
 #include <stdio.h>
-#include <stdlib.h>
+#include <cstdlib>
 #include <getopt.h>
 #include <cstring>
 #include <string>
 #include <iostream>
+#include <algorithm>
 
 #include "lookupTable.h"
 #include "norm.h"
 #include "ncFileReader.h"
+
+#define _MAX_VARDIMS 16
 
 using namespace std;
 
@@ -29,10 +32,32 @@ void help(){
     printf("                               0 <= y <= nDims-1 [default nDims-2].\n");
     printf("    -o or --output=string: Output filename [default: output.bin].\n");
     printf("    -i or --index=string:  Comma separated list of indices to display\n");
-    printf("                               sliced indices ignored. [default \"0,0,0,...\"].\n\n");
+    printf("                               sliced indices ignored. Invalid entries are\n");
+    printf("                               set to zero [default \"0,0,0,...\"].\n\n");
     printf("Example:\n");
     printf("    nc2pcolor -x 2 -y 1 -index=\"10,0,0,1\" --output=wind_10_1.bin file.nc U\n");
     exit(1);
+}
+
+bool parse_index(const string& index, int& n, int vals[_MAX_VARDIMS]) {
+    size_t i, k=0;
+    n=0;
+    string elipses("...");
+    for(i=0; i<_MAX_VARDIMS; i++) vals[i] = 0;
+    while( n < _MAX_VARDIMS ) {
+        i = min(index.find(',', k), index.size());
+        string sub(index.substr(k,i-k));
+        if(sub == elipses) break;
+        try {
+            vals[n++] = max(atoi(sub.c_str()),0);
+        }
+        catch (int e)
+        {
+            return false;
+        }
+        k=i+1;
+        if(i >= index.size()) return true;
+    }
 }
 
 int main(int argc, char *argv[]){
@@ -125,6 +150,16 @@ int main(int argc, char *argv[]){
         cout << "Invalid arguments." << endl;
         help();
     }
+    int nindex, Aindex[_MAX_VARDIMS];
+    if(!parse_index(index,nindex,Aindex)) {
+        cout << "Error reading index specification: " << index << endl;
+    }
+    else {
+        cout << "Read index as: ";
+        for(int i=0;i <= nindex; i++) cout << Aindex[i] << " ";
+        cout << "0 0 0 ..." << endl;
+    }
+
     cout << nargs << " args remaining" << endl;
     while (optind < argc){
         cout << argv[optind] << endl;
