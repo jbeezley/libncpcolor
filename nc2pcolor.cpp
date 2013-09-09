@@ -43,8 +43,8 @@ int main(int argc, char *argv[]){
     char version=0;
     int xDim;
     int yDim;
-    char *output;
-    char *index;
+    string output("output.bin");
+    string index("");
 
     // GetOpt option definition
     char *opt_xDim=0;
@@ -100,14 +100,12 @@ int main(int argc, char *argv[]){
 
             case 'o' : // -o or --output
                 opt_output=optarg;
-                output=(char *)malloc(sizeof(char) * (strlen(opt_output)+1));
-                strcpy(output,opt_output);
+                output=string(opt_output);//(char *)malloc(sizeof(char) * (strlen(opt_output)+1));
                 break;
 
             case 'i' : // -i or --index
                 opt_index=optarg;
-                index=(char *)malloc(sizeof(char) * (strlen(opt_index)+1));
-                strcpy(index,opt_index);
+                index=string(opt_index);//(char *)malloc(sizeof(char) * (strlen(opt_index)+1));
                 break;
 
             case '?' : // Invalid option
@@ -122,7 +120,14 @@ int main(int argc, char *argv[]){
     }
     
     // Iterate over rest arguments called argv[optind]
+    int nargs = argc - optind;
+    if(nargs != 2) {
+        cout << "Invalid arguments." << endl;
+        help();
+    }
+    cout << nargs << " args remaining" << endl;
     while (optind < argc){
+        cout << argv[optind] << endl;
         // Your code here 
         
         optind++;
