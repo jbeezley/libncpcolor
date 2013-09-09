@@ -1,7 +1,7 @@
 ACLOCAL_AMFLAGS = ${ACLOCAL_FLAGS}
 AM_CPPFLAGS = ${NETCDF_CFLAGS}
 
-#bin_PROGRAMS = testLookupTable.exe testNorm.exe testSlice.exe testNcFileReader.exe
+check_PROGRAMS = testLookupTable testNorm testSlice testNcFileReader
 
 lib_LTLIBRARIES = libncpcolor-@LIBNCPCOLOR_API_VERSION@.la
 libncpcolor_@LIBNCPCOLOR_API_VERSION@_la_SOURCES = lookupTable.cpp lookupTable.h norm.h \
@@ -14,10 +14,13 @@ nobase_libncpcolor_include_HEADERS = ncFileReader.h lookupTable.h norm.h
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = libncpcolor-$(LIBNCPCOLOR_API_VERSION).pc
 
-#testLookupTable_exe_SOURCES = lookupTable.cpp lookupTable.h testLookupTable.cpp
-#testNorm_exe_SOURCES = norm.h testNorm.cpp
-#testSlice_exe_SOURCES = ncFileReader.cpp ncFileReader.h testSlice.cpp netcdf.cpp ncvalues.cpp
-#testSlice_exe_LDADD = $(NETCDF_LIBS)
-#testNcFileReader_exe_SOURCES = ncFileReader.cpp ncFileReader.h testNcFileReader.cpp netcdf.cpp ncvalues.cpp
-#testNcFileReader_exe_LDADD = $(NETCDF_LIBS)
+TESTS = testLookupTable testNorm testSlice run_testNcFileReader.sh
+
+LDADD = libncpcolor-$(LIBNCPCOLOR_API_VERSION).la $(NETCDF_LIBS)
+
+testLookupTable_SOURCES = testLookupTable.cpp
+testNorm_SOURCES = testNorm.cpp
+testSlice_SOURCES = testSlice.cpp
+testNcFileReader_SOURCES = testNcFileReader.cpp
 dist_noinst_SCRIPTS = autogen.sh
+CLEANFILES = test.nc

@@ -21,10 +21,12 @@ int main() {
 		//float *A = new float[var->sliceSize(slice)];
 		void *A = NULL;
 		assert(var->readSlice(slice,A));
-		slice.setXDim(0);
-		slice.setYDim(1);
-		cout << var->name() << var->shape() << slice << endl;
-		assert(var->readSlice(slice,A));
+        if(var->nDims() > 2) {
+		    slice.setXDim(0);
+		    slice.setYDim(1);
+		    cout << var->name() << var->shape() << slice << endl;
+		    assert(var->readSlice(slice,A));
+        }
 		delete [] (float*) A;
 	}
 }

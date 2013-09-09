@@ -121,21 +121,24 @@ NcSliceFile::NcSliceFile(const NcSliceFile& file) : _file(file._fileName.c_str()
                 baseVar = new VariableFloat(var);
             else if(type == ncDouble)
                 baseVar = new VariableDouble(var);
+            else
+                assert(0);
             _variables[name] = baseVar;
         }
     }
 }
 
 NcSliceFile::~NcSliceFile() {
-    for(variableMapType::iterator var=_variables.begin(); var!=_variables.end(); ++var)
-        delete var->second;
+//    for(variableMapType::iterator var=_variables.begin(); var!=_variables.end(); ++var)
+//        delete var->second;
 }
 
 bool NcSliceFile::canDisplay(const NcVar* var) {
     NcType type = var->type();
     int nDims = var->num_dims();
 
-    return ( (nDims >= 2) && (
+    return ( (nDims >= 2) && 
+             (var->num_vals() > 0) && (
              (type == ncByte)  ||
              (type == ncShort) ||
              (type == ncInt)   ||
