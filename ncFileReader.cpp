@@ -25,8 +25,8 @@ void SliceType::getCount(long* count) const {
     }
 }
 
-template class Variable<float>;
 template class Variable<double>;
+template class Variable<float>;
 template class Variable<int>;
 template class Variable<long>;
 template class Variable<short>;
@@ -54,23 +54,21 @@ size_t BaseVariable::sliceSize(const BaseVariable::sliceType& slice) const {
 }
 
 template<typename T>
-bool Variable<T>::readSlice(const Variable<T>::sliceType& slice, void*& a) const {
+bool Variable<T>::readSlice(const Variable<T>::sliceType& slice, double* a) const {
     long count[nDims()], start[nDims()];
-    if(a) delete [] (T*) a;
-    a = new T [ sliceSize(slice) ];
     slice.getStart(start);
     slice.getCount(count);
     var()->set_cur(start);
-    var()->get((T*) a, count);
-    transpose(slice, (T*) a);
+    var()->get(a, count);
+    transpose(slice, a);
     return true;
 }
 
 template<typename T>
-void Variable<T>::transpose(const sliceType& slice, T* A) const {
+void Variable<T>::transpose(const sliceType& slice, double* A) const {
     if(slice.doTranspose())
     {
-        T tmp;
+        double tmp;
         const size_t ny = shape()[slice.yDim()];
         const size_t nx = shape()[slice.xDim()];
         for(size_t i=0; i<slice.yDim(); i++)

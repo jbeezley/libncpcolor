@@ -18,15 +18,16 @@ int main() {
 		BaseVariable *var = it->second;
 		BaseVariable::sliceType slice = var->defaultSlice();
 		cout << var->name() << var->shape() << slice << endl;
-		//float *A = new float[var->sliceSize(slice)];
-		void *A = NULL;
+		double *A = new double[var->sliceSize(slice)];
 		assert(var->readSlice(slice,A));
         if(var->nDims() > 2) {
 		    slice.setXDim(0);
 		    slice.setYDim(1);
+		    delete [] A;
+		    A = new double[var->sliceSize(slice)];
 		    cout << var->name() << var->shape() << slice << endl;
 		    assert(var->readSlice(slice,A));
         }
-		delete [] (float*) A;
+		delete [] A;
 	}
 }

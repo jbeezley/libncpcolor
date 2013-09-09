@@ -70,14 +70,13 @@ public:
     size_t sliceSize(const sliceType& slice) const;
     string name() const { return (string) var()->name(); }
     sliceType defaultSlice() const { return sliceType(shape()); }
-
-    virtual bool readSlice(const sliceType& slice, void*& a) const = 0;
+    virtual bool readSlice(const sliceType& slice, double* a) const = 0;
 };
 
 template<typename T>
 class Variable : public BaseVariable {
 private:
-    virtual void transpose(const sliceType& slice, T* A) const;
+    virtual void transpose(const sliceType& slice, double* A) const;
 public:
     typedef T varType;
 
@@ -85,13 +84,11 @@ public:
     Variable(const BaseVariable& v) : BaseVariable(v) {}
     
     virtual string myType() const { return (string) typeid(T).name(); }
-    
-    virtual bool readSlice(const sliceType& slice, void*& a) const;// { return readSlice(slice, (T*) a); }
-    //virtual bool readSlice(const sliceType& slice, T*& a) const;
+    virtual bool readSlice(const sliceType& slice, double* a) const;
 };
 
-typedef Variable<float> VariableFloat;
 typedef Variable<double> VariableDouble;
+typedef Variable<float> VariableFloat;
 typedef Variable<int> VariableInt;
 typedef Variable<long> VariableLong;
 typedef Variable<short> VariableShort;
