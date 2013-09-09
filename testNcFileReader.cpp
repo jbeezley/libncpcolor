@@ -25,6 +25,6 @@ int main() {
 		slice.setYDim(1);
 		cout << var->name() << var->shape() << slice << endl;
 		assert(var->readSlice(slice,A));
-		delete [] A;
+		delete [] (float*) A;
 	}
 }
