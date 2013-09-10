@@ -9,16 +9,18 @@
 using namespace std;
 
 class LookupTable {
-
-private:
+public:
     static const unsigned int LUTROWS = 256,
                               LUTCOLORS = 3,
                               LUTSIZE = LUTROWS * LUTCOLORS,
                               PIXELELEMENTS = 4;
     static const unsigned int LUT_RED = 0, 
                               LUT_GREEN = 1,
-                              LUT_BLUE = 2;
+                              LUT_BLUE = 2,
+                              LUT_ALPHA = 3;
     
+
+private:
     // To contain the main lookup table
     uint8_t lut[LUTSIZE];
 

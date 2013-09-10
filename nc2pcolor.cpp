@@ -6,6 +6,7 @@
 #include <string>
 #include <iostream>
 #include <algorithm>
+#include <fstream>
 
 #include "lookupTable.h"
 #include "norm.h"
@@ -69,6 +70,65 @@ bool parse_index(const string& index, int& n, int vals[_MAX_VARDIMS]) {
         k=i+1;
         if(i >= index.size()) return true;
     }
+}
+
+bool write_raster(const string& filename,
+                  const string& variable,
+                  const int xDim,
+                  const int yDim, 
+                  const int *index,
+                  const string& color,
+                  const string& output) {
+    
+    NcSliceFile file(filename);
+    const BaseVariable* var = file.getVariable(variable);
+    if(!var) {
+        cout << "Variable " << variable << " not found." << endl;
+        return false;
+    }
+    cout << file << endl;
+    BaseVariable::sliceType slice=var->defaultSlice();
+    cout << *var << endl;
+    slice.setXDim(xDim);
+    slice.setYDim(yDim);
+    for(int i=0;i<slice.size(); i++) slice[i] = index[i];
+    if(!slice.isValid()) {
+        cout << "Invalid slice description: " << endl;
+        cout << slice << endl;
+        return false;
+    }
+    cout << slice << endl;
+    LinearNorm<double> norm;
+    LookupTable lut;
+    lut.loadTable(color);
+    
+    const size_t N = var->sliceSize(slice);
+    double *A = new double[N];
+    if(!A) {
+        cout << "Could not allocate memory." << endl;
+        return 0;
+    }
+    
+    var->readSlice(slice, A);
+    norm.setMinMaxValFromArray(N, A);
+    uint8_t *B = new uint8_t [N]; 
+    norm.normalize(N,A,B);
+    uint8_t *C = new uint8_t [lut.imageSize(N)];
+
+    lut.makePColor(N,B,C);
+
+    ofstream fout(output.c_str(), ios::out | ios::binary | ios::trunc);
+    for(int i=0;i<lut.imageSize(N);i++) fout << C[i];
+    fout.close();
+    fout.open((output + ".hdr").c_str(), ios::out | ios::trunc);
+    fout << var->shape()[slice.xDim()] << endl;
+    fout << var->shape()[slice.yDim()] << endl;
+    fout << 4;
+    fout.close();
+    delete [] A;
+    delete [] B;
+    delete [] C;
+    return true;
 }
 
 int main(int argc, char *argv[]){
@@ -183,14 +243,11 @@ int main(int argc, char *argv[]){
         cout << "0 0 0 ..." << endl;
     }
 
-    cout << nargs << " args remaining" << endl;
-    while (optind < argc){
-        cout << argv[optind] << endl;
-        // Your code here 
-        
-        optind++;
-    }
-
-    return 0;
+    string filename(argv[optind]);
+    string variable(argv[optind+1]);
+    if(write_raster(filename, variable, xDim, yDim, Aindex, color, output))
+        return 0;
+    else
+        return 1;
 }
 
