@@ -4,6 +4,9 @@
 #include<iostream>
 #include<dirent.h>
 #include<string>
+#include<cassert>
+
+#undef NDEBUG
 
 using namespace std;
 
@@ -38,7 +41,7 @@ int main() {
         }
     }
     cout << endl << "Loading jet" << endl;
-    lutTable.loadTable((string)"jet");
+    assert(lutTable.loadTable((string)"jet"));
     cout << endl << "Testing lutData.h:" << endl;
     for(int i = 0; i<lut::NTables; i++) {
         cout << "lut number " << i << ": " << lut::lookupTables[i].name << endl;
