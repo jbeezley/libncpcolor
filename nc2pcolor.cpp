@@ -8,6 +8,8 @@
 #include <algorithm>
 #include <fstream>
 
+#include <png.h>
+
 #include "lookupTable.h"
 #include "norm.h"
 #include "ncFileReader.h"
