@@ -26,3 +26,7 @@ testSlice_SOURCES = testSlice.cpp
 testNcFileReader_SOURCES = testNcFileReader.cpp
 dist_noinst_SCRIPTS = autogen.sh
 CLEANFILES = test.nc
+
+lutData.h: luts/* buildluts.py bin.py
+	rm -f luts/*.h
+	python buildluts.py
