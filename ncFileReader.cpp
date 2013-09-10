@@ -145,6 +145,15 @@ bool NcSliceFile::canDisplay(const NcVar* var) {
              (type == ncDouble) ) );
 }
 
+const BaseVariable* NcSliceFile::getVariable(const string& varname) const {
+    const variableMapType vmap = variables();
+    variableMapType::const_iterator var = vmap.find(varname);
+    if(var == vmap.end())
+        return NULL;
+    else
+        return var->second;
+}
+
 ostream& operator<<(ostream& out, const BaseVariable& var) {
     out << var.myType() << " " << var.name() << "[";
     if(var.nDims() > 0) out << var.shape()[0];

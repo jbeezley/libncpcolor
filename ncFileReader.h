@@ -112,6 +112,7 @@ public:
     ~NcSliceFile();
     const variableMapType& variables() const { return _variables; }
     string fileName() const { return _fileName; }
+    const BaseVariable* getVariable(const string& varname) const;
 
 };
 
