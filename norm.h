@@ -60,17 +60,17 @@ public:
     T range() const { return _range; }
     
     /* Convenience methods for setting minimum and maximum values according to an array. */
-    void setMinValFromArrray(const size_t N, const T Array[]) {
+    void setMinValFromArray(const size_t N, const T Array[]) {
         T minVal = Array[0];
         for(size_t i = 1; i<N; i++) if(Array[i] < minVal) minVal = Array[i];
         setMinVal(minVal);
     }
-    void setMaxValFromArrray(const size_t N, const T Array[]) {
+    void setMaxValFromArray(const size_t N, const T Array[]) {
         T maxVal = Array[0];
         for(size_t i = 1; i<N; i++) if(Array[i] > maxVal) maxVal = Array[i];
         setMaxVal(maxVal);
     }
-    void setMinMaxValFromArrray(const size_t N, const T Array[]) {
+    void setMinMaxValFromArray(const size_t N, const T Array[]) {
         T minVal = Array[0];
         T maxVal = Array[0];
         for(size_t i = 1; i<N; i++) {
@@ -83,7 +83,7 @@ public:
 
     /* Perform the mapping on a scalar or array. */
     virtual uint8_t operator() (const T& val) const {return (uint8_t) round(255.0 * scale(((double)val - (double)minVal())/range()));}
-    virtual uint8_t normalize(const size_t N, const T inArray[], uint8_t outArray[]) const {
+    virtual void normalize(const size_t N, const T inArray[], uint8_t outArray[]) const {
         for(size_t i = 0; i<N; i++) outArray[i] = (*this)(inArray[i]);
     }
 };
