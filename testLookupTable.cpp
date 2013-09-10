@@ -1,4 +1,5 @@
 #include "lookupTable.h"
+#include "lutData.h"
 
 #include<iostream>
 #include<dirent.h>
@@ -36,5 +37,12 @@ int main() {
             }
         }
     }
+    cout << endl << "Testing lutData.h:" << endl;
+    for(int i = 0; i<lut::NTables; i++) {
+        cout << "lut number " << i << ": " << lut::lookupTables[i].name << endl;
+        lutTable.setData((uint8_t*) lut::lookupTables[i].data);
+        lutTable.makePColor(100, A, B);
+    }
+    cout << "Success!" << endl;
     return hasError;
 }

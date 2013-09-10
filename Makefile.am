@@ -20,7 +20,7 @@ TESTS = testLookupTable testNorm testSlice run_testNcFileReader.sh
 LDADD = libncpcolor-$(LIBNCPCOLOR_API_VERSION).la $(NETCDF_LIBS)
 
 nc2pcolor_SOURCES = nc2pcolor.cpp
-testLookupTable_SOURCES = testLookupTable.cpp
+testLookupTable_SOURCES = testLookupTable.cpp lutData.h
 testNorm_SOURCES = testNorm.cpp
 testSlice_SOURCES = testSlice.cpp
 testNcFileReader_SOURCES = testNcFileReader.cpp
