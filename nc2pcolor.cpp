@@ -10,6 +10,7 @@
 #include "lookupTable.h"
 #include "norm.h"
 #include "ncFileReader.h"
+#include "lutData.h"
 
 #define _MAX_VARDIMS 16
 
@@ -26,6 +27,7 @@ void help(){
     printf("    -h or --help:          Displays this information.\n");
     printf("    -v or --verbose:       Verbose mode on.\n");
     printf("    -V or --version:       Displays the current version number.\n");
+    printf("    -l or --help-color:    List color lookup tables.\n");
     printf("    -x or --xDim=integer:  Specify the horizontal dimension, must be in the range:\n");
     printf("                               0 <= x <= nDims-1 [default nDims-1].\n");
     printf("    -y or --yDim=integer:  Specify the vertical dimension, must be in the range:\n");
@@ -33,9 +35,18 @@ void help(){
     printf("    -o or --output=string: Output filename [default: output.bin].\n");
     printf("    -i or --index=string:  Comma separated list of indices to display\n");
     printf("                               sliced indices ignored. Invalid entries are\n");
-    printf("                               set to zero [default \"0,0,0,...\"].\n\n");
+    printf("                               set to zero [default \"0,0,0,...\"].\n");
+    printf("    -c or --color=string:  Color lookup table to use (see --help-color) [default jet]\n\n");
     printf("Example:\n");
     printf("    nc2pcolor -x 2 -y 1 -index=\"10,0,0,1\" --output=wind_10_1.bin file.nc U\n");
+    exit(1);
+}
+
+void list_colors() {
+    printf("Color tables available:\n");
+    for(int i=0; i<lut::NTables; i++) {
+        cout << lut::lookupTables[i].name << endl;
+    }
     exit(1);
 }
 
@@ -70,6 +81,7 @@ int main(int argc, char *argv[]){
     int yDim;
     string output("output.bin");
     string index("");
+    string color("jet");
 
     // GetOpt option definition
     char *opt_xDim=0;
@@ -78,16 +90,18 @@ int main(int argc, char *argv[]){
     char *opt_index=0;
 
     int next_option;
-    const char* const short_options = "hvVx:y:o:i:" ;
+    const char* const short_options = "hvVlx:y:o:i:c:" ;
     const struct option long_options[] =
         {
             { "help", 0, NULL, 'h' },
+            { "help-color", 0, NULL, 'l' },
             { "verbose", 0, NULL, 'v' },
             { "version", 0, NULL, 'V' },
             { "xDim", 1, NULL, 'x' },
             { "yDim", 1, NULL, 'y' },
             { "output", 1, NULL, 'o' },
             { "index", 1, NULL, 'i' },
+            { "color", 1, NULL, 'c' },
             { NULL, 0, NULL, 0 }
         };
 
@@ -103,6 +117,10 @@ int main(int argc, char *argv[]){
 
             case 'h' : // -h or --help 
                 help();
+                break;
+            
+            case 'l' : // -l or --help-color
+                list_colors();
                 break;
 
             case 'v' : // -v or --verbose
@@ -131,6 +149,11 @@ int main(int argc, char *argv[]){
             case 'i' : // -i or --index
                 opt_index=optarg;
                 index=string(opt_index);//(char *)malloc(sizeof(char) * (strlen(opt_index)+1));
+                break;
+            
+            case 'c' : // -c or --color
+                opt_index=optarg;
+                color=string(opt_index);//(char *)malloc(sizeof(char) * (strlen(opt_index)+1));
                 break;
 
             case '?' : // Invalid option

@@ -1,6 +1,8 @@
 #include "lookupTable.h"
 #include <fstream>
 
+#include "lutData.h"
+
 LookupTable::LookupTable() {
     lut_r = &(lut[LUTROWS * LUT_RED]);
     lut_g = &(lut[LUTROWS * LUT_GREEN]);
@@ -38,3 +40,12 @@ void LookupTable::makePColor(const size_t N, const uint8_t TArray[], uint8_t PAr
     }
 }
 
+bool LookupTable::loadTable(const string& tableName) {
+    for(int i=0; i<lut::NTables; i++) {
+        if((string)lut::lookupTables[i].name == tableName) {
+            setData((uint8_t*)lut::lookupTables[i].data);
+            return true;
+        }
+    }
+    return false;
+}

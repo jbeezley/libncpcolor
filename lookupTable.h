@@ -38,6 +38,7 @@ public:
     bool readData(const string& fileName);
      
     void makePColor(const size_t N, const uint8_t TArray[], uint8_t PArray[]) const;
+    bool loadTable(const string& tableName);
 };
 
 #endif

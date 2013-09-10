@@ -37,6 +37,8 @@ int main() {
             }
         }
     }
+    cout << endl << "Loading jet" << endl;
+    lutTable.loadTable((string)"jet");
     cout << endl << "Testing lutData.h:" << endl;
     for(int i = 0; i<lut::NTables; i++) {
         cout << "lut number " << i << ": " << lut::lookupTables[i].name << endl;
