@@ -7,5 +7,5 @@ Name: @PACKAGE_NAME@
 Description: A simple template library to write pseudo-color images from netcdf files.
 Version: @PACKAGE_VERSION@
 URL: @PACKAGE_URL@
-Libs: -L${libdir} -llibncpcolor-@LIBNCPCOLOR_API_VERSION@
-Cflags: -I${includedir}/libncpcolor-@LIBNCPCOLOR_API_VERSION@ -I${libdir}/libncpcolor-@LIBNCPCOLOR_API_VERSION@/include
+Libs: -L${libdir} -lncpcolor-@LIBNCPCOLOR_API_VERSION@
+Cflags: -I${includedir}

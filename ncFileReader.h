@@ -14,8 +14,8 @@ using namespace std;
 
 class SliceType : public vector<size_t> {
 private:
-    unsigned int _xDim, _yDim;
     const vector<size_t> _shape;
+    unsigned int _xDim, _yDim;
     SliceType() {}
 public:
     

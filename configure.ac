@@ -11,5 +11,5 @@ AC_PROG_CXX
 AC_PROG_CC
 PKG_CHECK_MODULES([NETCDF], [netcdf >= 3.6])
 PKG_CHECK_MODULES([LIBPNG], [libpng >= 1.5])
-AC_CONFIG_FILES([Makefile libncpcolor-${LIBNCPCOLOR_API_VERSION}.pc:libncpcolor.pc.in])
+AC_CONFIG_FILES([Makefile libncpcolor.pc:libncpcolor.pc.in])
 AC_OUTPUT

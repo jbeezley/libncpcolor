@@ -14,7 +14,7 @@ libncpcolor_@LIBNCPCOLOR_API_VERSION@_la_LDFLAGS = -version-info $(LIBNCPCOLOR_S
 libncpcolor_includedir = $(includedir)
 nobase_libncpcolor_include_HEADERS = ncFileReader.h lookupTable.h norm.h lutData.h
 pkgconfigdir = $(libdir)/pkgconfig
-pkgconfig_DATA = libncpcolor-$(LIBNCPCOLOR_API_VERSION).pc
+pkgconfig_DATA = libncpcolor.pc
 
 TESTS = testLookupTable testNorm testSlice run_testNcFileReader.sh test_write_png
 
