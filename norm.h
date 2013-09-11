@@ -97,7 +97,7 @@ private:
         double s = -1.0 * log2((double) m + _minCutoff);
         return LinearNorm<T>::scale( log2(fmax(_minCutoff,x))/s  + 1.0 ); 
     }
-    static const double _minCutoff = 1e-14;
+    static const double _minCutoff;
 public:
     LogNorm() {}
     LogNorm(const T& minVal, const T& maxVal) : LinearNorm<T>(minVal,maxVal) {
@@ -108,4 +108,7 @@ public:
         //LinearNorm<T>::setMinVal(fmax(_minCutoff,minVal));
     }
 };
+
+template <typename T>
+const double LogNorm<T>::_minCutoff = 1e-14;
 #endif
