@@ -88,6 +88,7 @@ public:
     }
 };
 
+#pragma GCC diagnostic ignored "-Wunused-parameter"
 /* Meant to be Log scaling normalization, but it is broken at the moment. */
 template <typename T>
 class LogNorm : public LinearNorm<T> {
@@ -111,4 +112,5 @@ public:
 
 template <typename T>
 const double LogNorm<T>::_minCutoff = 1e-14;
+#pragma GCC diagnostic pop
 #endif
