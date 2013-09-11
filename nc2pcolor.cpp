@@ -55,6 +55,8 @@ void help(){
     exit(1);
 }
 
+static bool verbose_output = false;
+
 void list_colors() {
     printf("Color tables available:\n");
     for(int i=0; i<lut::NTables; i++) {
@@ -98,9 +100,11 @@ bool write_raster(const string& filename,
         cout << "Variable " << variable << " not found." << endl;
         return false;
     }
-    cout << file << endl;
     BaseVariable::sliceType slice=var->defaultSlice();
-    cout << *var << endl;
+    if(verbose_output) {
+        cout << "Found variable:" << endl;
+        cout << *var << endl;
+    }
     if(xDim >= 0) slice.setXDim(xDim);
     if(yDim >= 0) slice.setYDim(yDim);
     for(int i=0;i<slice.size(); i++) slice[i] = index[i];
@@ -109,7 +113,10 @@ bool write_raster(const string& filename,
         cout << slice << endl;
         return false;
     }
-    cout << slice << endl;
+    if(verbose_output) {
+        cout << "Setting slice to:" << endl;
+        cout << slice << endl;
+    }
     LinearNorm<double> norm;
     LookupTable lut;
     lut.loadTable(color);
@@ -243,7 +250,7 @@ int main(int argc, char *argv[]){
                 return(1);
         }
     }
-    
+    verbose_output = verbose;    
     // Iterate over rest arguments called argv[optind]
     int nargs = argc - optind;
     if(nargs != 2) {
@@ -255,15 +262,19 @@ int main(int argc, char *argv[]){
         cout << "Error reading index specification: " << index << endl;
     }
     else {
-        cout << "Read index as: ";
-        for(int i=0;i <= nindex; i++) cout << Aindex[i] << " ";
-        cout << "0 0 0 ..." << endl;
+        if(verbose_output) {
+            cout << "Read index as: ";
+            for(int i=0;i <= nindex; i++) cout << Aindex[i] << " ";
+            cout << "0 0 0 ..." << endl;
+        }
     }
 
     string filename(argv[optind]);
     string variable(argv[optind+1]);
-    if(write_raster(filename, variable, xDim, yDim, Aindex, color, output))
+    if(write_raster(filename, variable, xDim, yDim, Aindex, color, output)) {
+        if(verbose_output) cout << "Success!" << endl;
         return 0;
+    }
     else
         return 1;
 }
