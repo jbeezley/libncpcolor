@@ -12,7 +12,7 @@ libncpcolor_@LIBNCPCOLOR_API_VERSION@_la_SOURCES = lookupTable.cpp \
 							 lutData.h write_png.h write_png.cpp
 libncpcolor_@LIBNCPCOLOR_API_VERSION@_la_LDFLAGS = -version-info $(LIBNCPCOLOR_SO_VERSION)
 libncpcolor_includedir = $(includedir)
-nobase_libncpcolor_include_HEADERS = ncFileReader.h lookupTable.h norm.h lutData.h
+nobase_libncpcolor_include_HEADERS = ncFileReader.h lookupTable.h norm.h lutData.h luts/*.h
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = libncpcolor.pc
 
