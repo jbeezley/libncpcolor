@@ -16,6 +16,14 @@
 #include "lutData.h"
 
 #define _MAX_VARDIMS 16
+#define HAVE_PNG 1
+
+#ifdef HAVE_PNG
+#include "write_png.h"
+#define OUTPUT_EXT "png"
+#else
+#define OUTPUT_EXT "bin"
+#endif
 
 using namespace std;
 
@@ -35,7 +43,9 @@ void help(){
     printf("                               0 <= x <= nDims-1 [default nDims-1].\n");
     printf("    -y or --yDim=integer:  Specify the vertical dimension, must be in the range:\n");
     printf("                               0 <= y <= nDims-1 [default nDims-2].\n");
-    printf("    -o or --output=string: Output filename [default: output.bin].\n");
+    printf("    -o or --output=string: Output filename [default: output.");
+    printf(OUTPUT_EXT);
+    printf("].\n");
     printf("    -i or --index=string:  Comma separated list of indices to display\n");
     printf("                               sliced indices ignored. Invalid entries are\n");
     printf("                               set to zero [default \"0,0,0,...\"].\n");
@@ -91,8 +101,8 @@ bool write_raster(const string& filename,
     cout << file << endl;
     BaseVariable::sliceType slice=var->defaultSlice();
     cout << *var << endl;
-    slice.setXDim(xDim);
-    slice.setYDim(yDim);
+    if(xDim >= 0) slice.setXDim(xDim);
+    if(yDim >= 0) slice.setYDim(yDim);
     for(int i=0;i<slice.size(); i++) slice[i] = index[i];
     if(!slice.isValid()) {
         cout << "Invalid slice description: " << endl;
@@ -118,7 +128,8 @@ bool write_raster(const string& filename,
     uint8_t *C = new uint8_t [lut.imageSize(N)];
 
     lut.makePColor(N,B,C);
-
+    
+#ifndef HAVE_PNG
     ofstream fout(output.c_str(), ios::out | ios::binary | ios::trunc);
     for(int i=0;i<lut.imageSize(N);i++) fout << C[i];
     fout.close();
@@ -127,6 +138,9 @@ bool write_raster(const string& filename,
     fout << var->shape()[slice.yDim()] << endl;
     fout << 4;
     fout.close();
+#else
+    write_png(output, var->shape()[slice.xDim()], var->shape()[slice.yDim()], C);
+#endif
     delete [] A;
     delete [] B;
     delete [] C;
@@ -139,9 +153,10 @@ int main(int argc, char *argv[]){
     // Here flags (options without arguments) and arguments with defined type
     char verbose=0;
     char version=0;
-    int xDim;
-    int yDim;
-    string output("output.bin");
+    int xDim = -1;
+    int yDim = -1;
+    string output("output.");
+    output += OUTPUT_EXT;
     string index("");
     string color("jet");
 
