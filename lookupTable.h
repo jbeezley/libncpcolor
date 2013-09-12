@@ -14,11 +14,15 @@ public:
                               LUTCOLORS = 3,
                               LUTSIZE = LUTROWS * LUTCOLORS,
                               PIXELELEMENTS = 4;
+
     static const unsigned int LUT_RED = 0, 
                               LUT_GREEN = 1,
                               LUT_BLUE = 2,
                               LUT_ALPHA = 3;
-    
+
+    static const unsigned int READ_LUT_RED = 0, 
+                              READ_LUT_GREEN = 1,
+                              READ_LUT_BLUE = 2;
 
 private:
     // To contain the main lookup table

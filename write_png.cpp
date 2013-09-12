@@ -36,7 +36,6 @@ bool write_png(const string& filename, const size_t width, const size_t height, 
                  PNG_INTERLACE_NONE, PNG_COMPRESSION_TYPE_DEFAULT,
                  PNG_FILTER_TYPE_DEFAULT);
    
-    
     png_write_info(png_ptr, info_ptr);
     
     png_bytep row_pointer;

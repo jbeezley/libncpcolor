@@ -112,5 +112,4 @@ public:
 
 template <typename T>
 const double LogNorm<T>::_minCutoff = 1e-14;
-#pragma GCC diagnostic pop
 #endif

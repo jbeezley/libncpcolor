@@ -16,19 +16,19 @@ bool write_image(const string& filename, const size_t width, const size_t height
 
     for(size_t i=0; i<size; i++) {
         if(pixel) {
-            raster[4*i + 0] = pixel[0];
-            raster[4*i + 1] = pixel[1];
-            raster[4*i + 2] = pixel[2];
+            raster[4*i + 1] = pixel[0];
+            raster[4*i + 2] = pixel[1];
+            raster[4*i + 3] = pixel[2];
         }
         else {
             ix = i % 256;
             iy = i - ix;
             j = ix + iy;
-            raster[4*i + 0] = pixel_foo(j);
-            raster[4*i + 1] = pixel_foo(3*j);
-            raster[4*i + 2] = pixel_foo(5*j);
+            raster[4*i + 1] = pixel_foo(j);
+            raster[4*i + 2] = pixel_foo(3*j);
+            raster[4*i + 3] = pixel_foo(5*j);
         }
-        raster[4*i + 3] = 255;
+        raster[4*i] = 255;
     }
     if(write_png(filename, width, height, raster)) {
         cout << "Successfully wrote " + filename << endl;

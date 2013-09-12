@@ -48,6 +48,7 @@ int main() {
         lutTable.setData((uint8_t*) lut::lookupTables[i].data);
         lutTable.makePColor(100, A, B);
     }
-    cout << "Success!" << endl;
+    if(!hasError)
+        cout << "Success!" << endl;
     return hasError;
 }
