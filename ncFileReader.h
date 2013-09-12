@@ -4,11 +4,12 @@
 
 #include<cstdlib>
 #include<vector>
-#include<netcdfcpp.h>
 #include<cassert>
 #include<string>
 #include<map>
 #include<typeinfo>
+
+#include "netcdfCompat.h"
 
 using namespace std;
 
