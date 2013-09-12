@@ -110,10 +110,10 @@ public:
     NcSliceFile(const string& fileName);
     NcSliceFile(const NcSliceFile& file);
     ~NcSliceFile();
-    const variableMapType& variables() const { return _variables; }
+    bool isOpen() const;
+    const variableMapType& variables() const { assert(isOpen()); return _variables; }
     string fileName() const { return _fileName; }
     const BaseVariable* getVariable(const string& varname) const;
-
 };
 
 ostream& operator<<(ostream& out, const BaseVariable& var);

@@ -126,6 +126,10 @@ NcSliceFile::NcSliceFile(const NcSliceFile& file) : _file(file._fileName.c_str()
     }
 }
 
+bool NcSliceFile::isOpen() const {
+    return _file.is_valid();
+}
+
 NcSliceFile::~NcSliceFile() {
 //    for(variableMapType::iterator var=_variables.begin(); var!=_variables.end(); ++var)
 //        delete var->second;
@@ -146,6 +150,7 @@ bool NcSliceFile::canDisplay(const NcVar* var) {
 }
 
 const BaseVariable* NcSliceFile::getVariable(const string& varname) const {
+    assert(isOpen());
     const variableMapType vmap = variables();
     variableMapType::const_iterator var = vmap.find(varname);
     if(var == vmap.end())

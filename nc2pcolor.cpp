@@ -95,6 +95,10 @@ bool write_raster(const string& filename,
                   const string& output) {
     
     NcSliceFile file(filename);
+    if(!file.isOpen()) {
+        cout << "Could not open file: " << filename << endl;
+        return false;
+    }
     const BaseVariable* var = file.getVariable(variable);
     if(!var) {
         cout << "Variable " << variable << " not found." << endl;
