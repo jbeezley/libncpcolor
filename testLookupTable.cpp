@@ -45,8 +45,10 @@ int main() {
     cout << endl << "Testing lutData.h:" << endl;
     for(int i = 0; i<lut::NTables; i++) {
         cout << "lut number " << i << ": " << lut::lookupTables[i].name << endl;
+        lutTable.setReverse(false);
         lutTable.setData((uint8_t*) lut::lookupTables[i].data);
         lutTable.makePColor(100, A, B);
+        lutTable.setReverse(true);
     }
     if(!hasError)
         cout << "Success!" << endl;

@@ -9,6 +9,7 @@ LookupTable::LookupTable() {
     lut_g = &(lut[LUTROWS * READ_LUT_GREEN]);
     lut_b = &(lut[LUTROWS * READ_LUT_BLUE]);
     initialized = 0;
+    _reverse = false;
 }
 
 void LookupTable::setData(const uint8_t lutData[]) {
@@ -34,11 +35,21 @@ bool LookupTable::readData(const string& fileName) {
 }
 
 void LookupTable::makePColor(const size_t N, const uint8_t TArray[], uint8_t PArray[]) const {
-    for(size_t i=0; i<N; i++) {
-        PArray[i*pixelSize() + LUT_ALPHA] = 255;
-        PArray[i*pixelSize() + LUT_RED]   = lut_r[TArray[i]]; 
-        PArray[i*pixelSize() + LUT_GREEN] = lut_g[TArray[i]];
-        PArray[i*pixelSize() + LUT_BLUE]  = lut_b[TArray[i]];
+    if(!_reverse) {
+        for(size_t i=0; i<N; i++) {
+            PArray[i*pixelSize() + LUT_ALPHA] = 255;
+            PArray[i*pixelSize() + LUT_RED]   = lut_r[TArray[i]]; 
+            PArray[i*pixelSize() + LUT_GREEN] = lut_g[TArray[i]];
+            PArray[i*pixelSize() + LUT_BLUE]  = lut_b[TArray[i]];
+        }
+    }
+    else {
+        for(size_t i=0; i<N; i++) {
+            PArray[i*pixelSize() + LUT_ALPHA] = 255;
+            PArray[i*pixelSize() + LUT_RED]   = lut_r[255-TArray[i]]; 
+            PArray[i*pixelSize() + LUT_GREEN] = lut_g[255-TArray[i]];
+            PArray[i*pixelSize() + LUT_BLUE]  = lut_b[255-TArray[i]];
+        }
     }
 }
 

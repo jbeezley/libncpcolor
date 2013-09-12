@@ -30,6 +30,7 @@ private:
 
     // Pointers to individual components
     uint8_t *lut_r, *lut_g, *lut_b;
+    bool _reverse;
 
     // Flag if data is set yet.
     bool initialized;
@@ -45,6 +46,7 @@ public:
      
     void makePColor(const size_t N, const uint8_t TArray[], uint8_t PArray[]) const;
     bool loadTable(const string& tableName);
+    void setReverse(bool reverse) { _reverse = reverse; }
 };
 
 #endif
