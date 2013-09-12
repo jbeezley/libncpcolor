@@ -10,7 +10,7 @@
 #ifndef NETCDF_HH
 #define NETCDF_HH
 
-#include "ncvalues.h"          // arrays that know their element type
+#include "ncvaluesCompat.h"          // arrays that know their element type
 
 typedef const char* NcToken;    // names for netCDF objects
 typedef unsigned int NcBool;    // many members return 0 on failure
