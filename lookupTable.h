@@ -57,6 +57,7 @@ public:
     void setReverse(bool reverse) { _reverse = reverse; }
 
     static const LookupTable& getLUT(const string& tableName, bool reversed = false);
+    static const LookupTable& getLUT(const int iLUT, bool reversed = false);
     static int getNTables();
     static const char* getTableName(const int i);
 

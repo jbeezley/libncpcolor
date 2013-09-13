@@ -77,6 +77,11 @@ const LookupTable& LookupTable::getLUT(const string &tableName, bool reversed) {
         return lutmap_r[tableName];
 }
 
+const LookupTable& LookupTable::getLUT(const int iLUT, bool reversed) {
+    assert(iLUT >=0 && iLUT < getNTables());
+    return getLUT((string) getTableName(iLUT), reversed);
+}
+
 void LookupTable::loadAll() {
     LookupTable lut_p, lut_r;
     std::string lutName;
@@ -95,6 +100,6 @@ int LookupTable::getNTables() {
     return lut::NTables;
 }
 
-const char* getTableName(const int i) {
+const char* LookupTable::getTableName(const int i) {
     return lut::lookupTables[i].name;
 }
