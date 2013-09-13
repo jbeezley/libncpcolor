@@ -50,6 +50,18 @@ int main() {
         lutTable.makePColor(100, A, B);
         lutTable.setReverse(true);
     }
+
+    cout << endl << "Testing lutmap:" << endl;
+    string lutname;
+    for(int i = 0; i<lut::NTables; i++) {
+        lutname = lut::lookupTables[i].name;
+        cout << "Loading: " << lutname << endl;
+        const LookupTable &lutRef = LookupTable::getLUT(lutname);
+        lutRef.makePColor(100, A, B);
+        cout << "Loading: " << lutname << " reversed" << endl;
+        const LookupTable &lutRef_r = LookupTable::getLUT(lutname,true);
+        lutRef_r.makePColor(100, A, B);
+    }
     if(!hasError)
         cout << "Success!" << endl;
     return hasError;

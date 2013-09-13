@@ -5,6 +5,7 @@
 #include<cstddef>
 #include<stdint.h>
 #include<string>
+#include<map>
 
 using namespace std;
 
@@ -35,6 +36,13 @@ private:
     // Flag if data is set yet.
     bool initialized;
 
+    // static elements for loading predefined lookup tables
+    static bool lutmap_init;
+    static map<string, LookupTable> lutmap;
+    static map<string, LookupTable> lutmap_r;
+    static void loadAll();
+
+
 public:
     LookupTable();
     
@@ -47,6 +55,8 @@ public:
     void makePColor(const size_t N, const uint8_t TArray[], uint8_t PArray[]) const;
     bool loadTable(const string& tableName);
     void setReverse(bool reverse) { _reverse = reverse; }
+
+    static const LookupTable& getLUT(const string& tableName, bool reversed = false);
 };
 
 #endif

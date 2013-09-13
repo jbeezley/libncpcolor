@@ -4,6 +4,10 @@
 #include "lutData.h"
 #include <cassert>
 
+bool LookupTable::lutmap_init = false;
+map<string, LookupTable> LookupTable::lutmap;
+map<string, LookupTable> LookupTable::lutmap_r;
+
 LookupTable::LookupTable() {
     lut_r = &(lut[LUTROWS * READ_LUT_RED]);
     lut_g = &(lut[LUTROWS * READ_LUT_GREEN]);
@@ -31,10 +35,12 @@ bool LookupTable::readData(const string& fileName) {
     if( size != LUTSIZE * sizeof(uint8_t) ) return false;
     file.read((char*)lut, size);
     file.close();
+    initialized = true;
     return true;
 }
 
 void LookupTable::makePColor(const size_t N, const uint8_t TArray[], uint8_t PArray[]) const {
+    assert(initialized);
     if(!_reverse) {
         for(size_t i=0; i<N; i++) {
             PArray[i*pixelSize() + LUT_ALPHA] = 255;
@@ -61,4 +67,26 @@ bool LookupTable::loadTable(const string& tableName) {
         }
     }
     return false;
+}
+
+const LookupTable& LookupTable::getLUT(const string &tableName, bool reversed) {
+    if(!lutmap_init) loadAll();
+    if(!reversed)
+        return lutmap[tableName];
+    else
+        return lutmap_r[tableName];
+}
+
+void LookupTable::loadAll() {
+    LookupTable lut_p, lut_r;
+    std::string lutName;
+    for(int i=0; i<lut::NTables; i++) {
+        lutName = lut::lookupTables[i].name;
+        lut_p.loadTable(lutName);
+        lut_r.loadTable(lutName);
+        lut_r.setReverse(true);
+        lutmap[string(lut::lookupTables[i].name)] = lut_p;
+        lutmap_r[string(lut::lookupTables[i].name)] = lut_r;
+    }
+    lutmap_init = true;
 }
