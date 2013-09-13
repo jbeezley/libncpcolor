@@ -90,3 +90,11 @@ void LookupTable::loadAll() {
     }
     lutmap_init = true;
 }
+
+int LookupTable::getNTables() {
+    return lut::NTables;
+}
+
+const char* getTableName(const int i) {
+    return lut::lookupTables[i].name;
+}
