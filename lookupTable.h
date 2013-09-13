@@ -51,6 +51,7 @@ public:
 
     void setData(const uint8_t lutData[]);
     bool readData(const string& fileName);
+    const uint8_t* getData() { return lut; }
      
     void makePColor(const size_t N, const uint8_t TArray[], uint8_t PArray[]) const;
     bool loadTable(const string& tableName);
