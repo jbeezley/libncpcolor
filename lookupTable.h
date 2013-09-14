@@ -16,9 +16,9 @@ public:
                               LUTSIZE = LUTROWS * LUTCOLORS,
                               PIXELELEMENTS = 4;
 
-    static const unsigned int LUT_RED = 0, 
+    static const unsigned int LUT_RED = 2, 
                               LUT_GREEN = 1,
-                              LUT_BLUE = 2,
+                              LUT_BLUE = 0,
                               LUT_ALPHA = 3;
 
     static const unsigned int READ_LUT_RED = 0, 
