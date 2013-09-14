@@ -5,8 +5,8 @@
 #include <cassert>
 
 bool LookupTable::lutmap_init = false;
-map<string, LookupTable> LookupTable::lutmap;
-map<string, LookupTable> LookupTable::lutmap_r;
+map<string, const LookupTable*> LookupTable::lutmap;
+map<string, const LookupTable*> LookupTable::lutmap_r;
 
 LookupTable::LookupTable() {
     lut_r = &(lut[LUTROWS * READ_LUT_RED]);
@@ -14,6 +14,15 @@ LookupTable::LookupTable() {
     lut_b = &(lut[LUTROWS * READ_LUT_BLUE]);
     initialized = 0;
     _reverse = false;
+}
+
+LookupTable::LookupTable(const LookupTable &other) {
+    for(size_t i = 0; i<LUTSIZE; i++) lut[i] = other.lut[i];
+    lut_r = &(lut[LUTROWS * READ_LUT_RED]);
+    lut_g = &(lut[LUTROWS * READ_LUT_GREEN]);
+    lut_b = &(lut[LUTROWS * READ_LUT_BLUE]);
+    initialized = other.initialized;
+    _reverse = other._reverse;
 }
 
 void LookupTable::setData(const uint8_t lutData[]) {
@@ -72,9 +81,9 @@ bool LookupTable::loadTable(const string& tableName) {
 const LookupTable& LookupTable::getLUT(const string &tableName, bool reversed) {
     if(!lutmap_init) loadAll();
     if(!reversed)
-        return lutmap[tableName];
+        return *lutmap[tableName];
     else
-        return lutmap_r[tableName];
+        return *lutmap_r[tableName];
 }
 
 const LookupTable& LookupTable::getLUT(const int iLUT, bool reversed) {
@@ -83,13 +92,15 @@ const LookupTable& LookupTable::getLUT(const int iLUT, bool reversed) {
 }
 
 void LookupTable::loadAll() {
-    LookupTable lut_p, lut_r;
+    LookupTable *lut_p, *lut_r;
     std::string lutName;
     for(int i=0; i<lut::NTables; i++) {
+        lut_p = new LookupTable();
+        lut_r = new LookupTable();
         lutName = lut::lookupTables[i].name;
-        lut_p.loadTable(lutName);
-        lut_r.loadTable(lutName);
-        lut_r.setReverse(true);
+        lut_p->loadTable(lutName);
+        lut_r->loadTable(lutName);
+        lut_r->setReverse(true);
         lutmap[string(lut::lookupTables[i].name)] = lut_p;
         lutmap_r[string(lut::lookupTables[i].name)] = lut_r;
     }

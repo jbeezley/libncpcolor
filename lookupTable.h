@@ -38,13 +38,14 @@ private:
 
     // static elements for loading predefined lookup tables
     static bool lutmap_init;
-    static map<string, LookupTable> lutmap;
-    static map<string, LookupTable> lutmap_r;
+    static map<string, const LookupTable*> lutmap;
+    static map<string, const LookupTable*> lutmap_r;
     static void loadAll();
 
 
 public:
     LookupTable();
+    LookupTable(const LookupTable& other);
     
     static size_t pixelSize() { return PIXELELEMENTS; }
     static size_t imageSize(const size_t N) { return pixelSize() * N; }

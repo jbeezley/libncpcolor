@@ -122,8 +122,7 @@ bool write_raster(const string& filename,
         cout << slice << endl;
     }
     LinearNorm<double> norm;
-    LookupTable lut;
-    lut.loadTable(color);
+    const LookupTable &lut = LookupTable::getLUT(color);
     
     const size_t N = var->sliceSize(slice);
     double *A = new double[N];
