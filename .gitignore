@@ -6,4 +6,5 @@
 .Spotlight*
 Thumbs.db
 .Trashes
-.
+*.pyc
+*.pyo
