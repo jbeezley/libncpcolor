@@ -24,6 +24,8 @@ along with libncpcolor.  If not, see <http://www.gnu.org/licenses/>.
 #include "lutData.h"
 #include <cassert>
 
+using namespace std;
+
 bool LookupTable::lutmap_init = false;
 map<string, const LookupTable*> LookupTable::lutmap;
 map<string, const LookupTable*> LookupTable::lutmap_r;
