@@ -17,8 +17,6 @@ You should have received a copy of the GNU Lesser Public License
 along with libncpcolor.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
-
 #ifndef _NC_FILEREADER_H
 #define _NC_FILEREADER_H
 
@@ -31,25 +29,32 @@ along with libncpcolor.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "netcdfCompat.h"
 
-using namespace std;
+/*!
+ *  \file
+ *
+ *  \brief Defines classes to extract 2D slices from netCDF files.
+ *
+ *  This header defines several classes simplifying the reading of
+ *  2 dimensional slices from variables in netCDF files.  
+ */
 
-class SliceType : public vector<size_t> {
+class SliceType : public std::vector<size_t> {
 private:
-    const vector<size_t> _shape;
+    const std::vector<size_t> _shape;
     unsigned int _xDim, _yDim;
     SliceType() {}
 public:
     
-    typedef vector<size_t> shapeType;
+    typedef std::vector<size_t> shapeType;
 
     SliceType(const shapeType& shape,
               const unsigned int xDim,
               const unsigned int yDim) :
-        vector<size_t>(shape.size(), 0), _shape(shape), 
+        std::vector<size_t>(shape.size(), 0), _shape(shape), 
         _xDim(xDim), _yDim(yDim) { assert(shape.size() >= 2); }
     
     SliceType(const shapeType& shape) :
-        vector<size_t>(shape.size(), 0), _shape(shape) {
+        std::vector<size_t>(shape.size(), 0), _shape(shape) {
         assert(shape.size() >= 2);
         _xDim = size() - 1;
         _yDim = size() - 2;
@@ -82,14 +87,14 @@ public:
     BaseVariable(NcVar *var) : _var(var) {}
     BaseVariable(const BaseVariable& v) : _var(v._var) {}
     
-    virtual string myType() const { return (string) "void"; }
+    virtual std::string myType() const { return (std::string) "void"; }
 
     unsigned int nDims() const {return var()->num_dims();}
-    string dimName(int i) const {return (string) var()->get_dim(i)->name(); }
+    std::string dimName(int i) const {return (std::string) var()->get_dim(i)->name(); }
     shapeType shape() const;
     size_t size() const;
     size_t sliceSize(const sliceType& slice) const;
-    string name() const { return (string) var()->name(); }
+    std::string name() const { return (std::string) var()->name(); }
     sliceType defaultSlice() const { return sliceType(shape()); }
     virtual bool readSlice(const sliceType& slice, double* a) const = 0;
 };
@@ -104,7 +109,7 @@ public:
     Variable(NcVar *var) : BaseVariable(var) {}
     Variable(const BaseVariable& v) : BaseVariable(v) {}
     
-    virtual string myType() const { return (string) typeid(T).name(); }
+    virtual std::string myType() const { return (std::string) typeid(T).name(); }
     virtual bool readSlice(const sliceType& slice, double* a) const;
 };
 
@@ -117,10 +122,10 @@ typedef Variable<ncbyte> VariableByte;
 
 class NcSliceFile {
 public:
-    typedef map<string, BaseVariable*> variableMapType;
+    typedef std::map<std::string, BaseVariable*> variableMapType;
 private:
     const NcFile _file;
-    const string _fileName;
+    const std::string _fileName;
     variableMapType _variables;
 
     NcSliceFile() : _file("") { assert(0); } // should never be called
@@ -128,18 +133,18 @@ private:
     static bool canDisplay(const NcVar* var);
 public:
     
-    NcSliceFile(const string& fileName);
+    NcSliceFile(const std::string& fileName);
     NcSliceFile(const NcSliceFile& file);
     ~NcSliceFile();
     bool isOpen() const;
     const variableMapType& variables() const { assert(isOpen()); return _variables; }
-    string fileName() const { return _fileName; }
-    const BaseVariable* getVariable(const string& varname) const;
+    std::string fileName() const { return _fileName; }
+    const BaseVariable* getVariable(const std::string& varname) const;
 };
 
-ostream& operator<<(ostream& out, const BaseVariable& var);
-ostream& operator<<(ostream& out, const NcSliceFile& file);
-ostream& operator<<(ostream& out, const SliceType::shapeType& shape);
-ostream& operator<<(ostream& out, const SliceType& slice);
+std::ostream& operator<<(std::ostream& out, const BaseVariable& var);
+std::ostream& operator<<(std::ostream& out, const NcSliceFile& file);
+std::ostream& operator<<(std::ostream& out, const SliceType::shapeType& shape);
+std::ostream& operator<<(std::ostream& out, const SliceType& slice);
 
 #endif

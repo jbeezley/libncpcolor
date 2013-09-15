@@ -134,7 +134,7 @@ public:
     /*! Convert a normalized array into color pixels.
      * \param[in] N Size of the input array
      * \param[in] TArray Input array
-     * \param[out] PArray Output array of size imageSize(N)*/
+     * \param[out] PArray Output array of size <tt>LookupTable::imageSize(N)</tt>*/
     void makePColor(const size_t N, const uint8_t TArray[], uint8_t PArray[]) const;
     
     /*! Load a predefined lookup table of name \p tableName

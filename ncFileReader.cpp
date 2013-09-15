@@ -21,6 +21,8 @@ along with libncpcolor.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "ncFileReader.h"
 
+using namespace std;
+
 void SliceType::getStart(long* start) const {
     assert (isValid());
     for(unsigned int i=0; i<size(); i++) {
