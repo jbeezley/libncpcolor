@@ -29,7 +29,8 @@ int main() {
     }
     while( (entry = readdir(dp)) ) {
         string dname = entry->d_name;
-        if(dname != "." && dname != ".." && dname.substr(dname.size()-2) != string(".h") ) {
+        if(dname != "." && dname != ".." && dname.substr(dname.size()-2) == string(".h") ) {
+            dname = dname.substr(0,dname.size()-2);
             if( lutTable.readData( dirname + "/" + dname ) ) {
                 cout << "Successfully read " << dname << endl;
                 lutTable.makePColor(100, A, B);

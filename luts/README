@@ -1,0 +1,103 @@
+These colormaps have been generated from matplotlib (http://matplotlib.org/).
+The license details for each colormap are listed below using information
+scraped from the the matplotlib distribution (lib/matplotlib/_cm.py).
+
+LICENSE.MATPLOTLIB
+
+    binary
+    autumn
+    bone
+    cool
+    copper
+    flag
+    prism
+    cubehelix
+    bwr
+    brg
+    gnuplot
+    gnuplot2
+    ocean
+    afmhot
+    rainbow
+    terrain
+    gray
+    hot
+    hsv
+    jet
+    pink
+    spring
+    summer
+    winter
+    spectral
+
+
+34 colormaps based on color specifications and designs
+developed by Cynthia Brewer (http://colorbrewer.org).
+The ColorBrewer palettes have been included under the terms
+of an Apache-stype license, LICENSE.COLORBREWER.
+
+    Accent
+    Blues
+    BrBG
+    BuGn
+    BuPu
+    Dark2
+    GnBu
+    Greens
+    Greys
+    Oranges
+    OrRd
+    Paired
+    Pastel1
+    Pastel2
+    PiYG
+    PRGn
+    PuBu
+    PuBuGn
+    PuOr
+    PuRd
+    Purples
+    RdBu
+    RdGy
+    RdPu
+    RdYlBu
+    RdYlGn
+    Reds
+    Set1
+    Set2
+    Set3
+    Spectral
+    YlGn
+    YlGnBu
+    YlOrBr
+    YlOrRd
+
+The next 7 palettes are from the Yorick scientific visalisation package,
+an evolution of the GIST package, both by David H. Munro.
+They are released under a BSD-like license (see LICENSE.YORICK).
+
+Most palette functions have been reduced to simple function descriptions
+by Reinier Heeres, since the rgb components were mostly straight lines.
+gist_earth_data and gist_ncar_data were simplified by a script and some
+manual effort.
+
+    gist_earth
+    gist_gray
+    gist_heat
+    gist_ncar
+    gist_rainbow
+    gist_stern
+    gist_yarg
+
+This bipolar color map was generated from CoolWarmFloat33.csv of
+"Diverging Color Maps for Scientific Visualization" by Kenneth Moreland.
+<http://www.cs.unm.edu/~kmorel/documents/ColorMaps/>
+
+    coolwarm
+
+Implementation of Carey Rappaport's CMRmap.
+See `A Color Map for Effective Black-and-White Rendering of Color-Scale
+Images' by Carey Rappaport
+http://www.mathworks.com/matlabcentral/fileexchange/2662-cmrmap-m
+
+    CMRmap

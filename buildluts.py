@@ -11,8 +11,17 @@ import bin
 
 if __name__ == '__main__':
 
-    files = glob('luts/*')
+    files = set(glob('luts/*')) - set(glob('luts/*.h')) - set(glob('luts/LICENSE*')) - set(('luts/README',))
     lutHeader = open('lutData.h', 'w')
+
+    lutHeader.write(open('copywrite.txt','r').read())
+    lutHeader.write('''/*
+DO NOT MODIFY THIS FILE!
+IT IS AUTOMATICALLY GENERATED FROM buildluts.py.
+
+See luts/README for license information for each individual colormap.
+*/
+''')
 
     headers = []
 
