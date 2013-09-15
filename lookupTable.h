@@ -106,13 +106,13 @@ public:
 
     /*! Get the total size of an image with N pixels.  For allocation of the
      * pseudo-color array in makePColor()
-     *  \param N Total number of pixels of the image
+     *  \param[in] N Total number of pixels of the image
      *  \return Total size of the image needed for makePColor()
      */
     static size_t imageSize(const size_t N) { return pixelSize() * N; }
     
     /*! Set the lookup table data.
-     *  \param lutData \p uint8_t array of size LookupTable::LUTSIZE with
+     *  \param[in] lutData \p uint8_t array of size LookupTable::LUTSIZE with
      *  LookupTable::LUTROWS rows and LookupTable::LUTCOLORS columns.  The 
      *  order of the colors in the table are given by LookupTable::READ_LUT_RED, 
      *  LookupTable::READ_LUT_GREEN, and LookupTable::READ_LUT_BLUE.  This array
@@ -122,25 +122,45 @@ public:
     void setData(const uint8_t lutData[]);
 
     /*! Set the lookup table data from a file.
-     *  \param fileName The name of a file containing binary data in the format
-     *  described in setData().*/
+     *  \param[in] fileName The name of a file containing binary data in the format
+     *  described in setData().
+     *  \retval true if the file was read successfully
+     *  \retval false if an error occured*/
     bool readData(const std::string& fileName);
 
     /*! Return a pointer to the lookup table data. */
     const uint8_t* getData() { return lut; }
     
-    /*! Convert a normalized array into color pixels */
+    /*! Convert a normalized array into color pixels.
+     * \param[in] N Size of the input array
+     * \param[in] TArray Input array
+     * \param[out] PArray Output array of size imageSize(N)*/
     void makePColor(const size_t N, const uint8_t TArray[], uint8_t PArray[]) const;
-
+    
+    /*! Load a predefined lookup table of name \p tableName
+     * \retval true on success
+     * \retval false if the table was not found*/
     bool loadTable(const std::string& tableName);
+
+    /*! Set the reverse flag.  The lookup table will be inverted: i -> 255 - i*/
     void setReverse(bool reverse) { _reverse = reverse; }
     
-    /*! method 1 */
+    /*! Get a statically allocated reference to a predefined lookup table.
+     * \param tableName The name of the table
+     * \param reversed When true, return the inverted version of tableName 
+     * \sa getLUT(const int, bool) */
     static const LookupTable& getLUT(const std::string& tableName, bool reversed = false);
 
-    /*! method 2 */
+    /*! Get a statically allocated reference to a predefined lookup table.
+     * \param iLUT The number of the lookup table to fetch (0 <= iLUT <= getNTables())
+     * \param reversed When true, return the inverted version of tableName 
+     * \sa getLUT(const std::string&, bool) */
     static const LookupTable& getLUT(const int iLUT, bool reversed = false);
+
+    /*! Return the total number of predefined tables. */
     static int getNTables();
+
+    /*! Return the name of the ith lookup table. */
     static const char* getTableName(const int i);
 
 };
