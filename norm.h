@@ -44,9 +44,9 @@ along with libncpcolor.  If not, see <http://www.gnu.org/licenses/>.
 #include<cmath>
 
 
-/*! The template parameter specifies the values that the norm acts on...
- *  the norm itself always returns a uint8_t.*/
-
+/*! \class LinearNorm
+ *  \brief Defines an affine mapping from [minValue(),maxVal()] -> [0,255].
+ *  \tparam T specifies the type that the norm acts on... the norm itself always returns a uint8_t.*/
 template <typename T>
 class LinearNorm {
 private:
@@ -73,8 +73,8 @@ public:
 
     /*! Construct a well defined mapping from min/max value. */
     /*!
-     * \param minVal the minimal value of the mapping ( minVal |-> 0 )
-     * \param maxVal the maximum value of the mapping ( maxVal |-> 255 )
+     * \param[in] minVal the minimal value of the mapping ( minVal |-> 0 )
+     * \param[in] maxVal the maximum value of the mapping ( maxVal |-> 255 )
     */
     LinearNorm(const T& minVal, const T& maxVal) : _minVal(minVal),_maxVal(maxVal) {
         _range = LinearNorm<T>::computeRange(_minVal, _maxVal);
@@ -83,30 +83,54 @@ public:
     /*! Copy constructor. */
     LinearNorm(const LinearNorm<T>& other) : LinearNorm<T>(other._minVal,other._maxVal) {}
 
-    /*! Public access to minimum and maximum values of the mapping. */
+    /*! Set the minimum value of the mapping. */
     void setMinVal(const T& minVal) {
         _minVal = minVal;
         _range = LinearNorm<T>::computeRange(_minVal, _maxVal);
     }
+    
+    /*! Set the maximum value of the mapping. */
     void setMaxVal(const T& maxVal) {
         _maxVal = maxVal;
         _range = LinearNorm<T>::computeRange(_minVal, _maxVal);
     }
+
+    /*! Returns the minimum value of the mapping. */
     T minVal() const { return _minVal; }
+    
+    /*! Returns the maximum value of the mapping. */
     T maxVal() const { return _maxVal; }
+    
+    /*! Returns the range of the mapping. (maxVal() - minVal())*/
     T range() const { return _range; }
     
-    /*! Convenience methods for setting minimum and maximum values according to an array. */
+    /*! Convenience method for setting minimum value according to an array. 
+     * \param[in] N size of the array
+     * \param[in] Array[] pointer to an array of size N.
+     * \sa setMaxValFromArray()
+     * \sa setMinMaxValFromArray()*/
     void setMinValFromArray(const size_t N, const T Array[]) {
         T minVal = Array[0];
         for(size_t i = 1; i<N; i++) if(Array[i] < minVal) minVal = Array[i];
         setMinVal(minVal);
     }
+    
+    /*! Convenience method for setting maximum value according to an array. 
+     * \param[in] N size of the array
+     * \param[in] Array[] pointer to an array of size N.
+     * \sa setMinValFromArray()
+     * \sa setMinMaxValFromArray()*/
     void setMaxValFromArray(const size_t N, const T Array[]) {
         T maxVal = Array[0];
         for(size_t i = 1; i<N; i++) if(Array[i] > maxVal) maxVal = Array[i];
         setMaxVal(maxVal);
     }
+    
+    /*! Convenience method for setting minimum/maximum value according to an array. 
+     * \param[in] N size of the array
+     * \param[in] Array[] pointer to an array of size N.
+     * \sa setMinValFromArray()
+     * \sa setMaxValFromArray()*/
     void setMinMaxValFromArray(const size_t N, const T Array[]) {
         T minVal = Array[0];
         T maxVal = Array[0];
@@ -118,17 +142,26 @@ public:
         }
     }
 
-    /*! Perform the mapping on a scalar or array. */
+    /*! Perform the mapping on a scalar or array. 
+     * \param[in] val scalar of type T.
+     * \return uint8_t normalized value.
+     * \sa normalize()*/
     virtual uint8_t operator() (const T& val) const {return (uint8_t) round(255.0 * scale(((double)val - (double)minVal())/range()));}
 
-    /*! Normalize an array. */
+    /*! Normalize an array. 
+     * \param[in] N size of the arrays.
+     * \param[in] inArray[] T array of size N to normalize.
+     * \param[out] outArray[] uint8_t array of size N containing the normalized values. 
+     * \sa operator()*/
     virtual void normalize(const size_t N, const T inArray[], uint8_t outArray[]) const {
         for(size_t i = 0; i<N; i++) outArray[i] = (*this)(inArray[i]);
     }
 };
 
 #pragma GCC diagnostic ignored "-Wunused-parameter"
-/* Meant to be Log scaling normalization, but it is broken at the moment. */
+/*! \class LogNorm
+ *  \brief Meant to be Log scaling normalization, but it is broken at the moment.
+ *  \tparam T specifies the type that the norm acts on... the norm itself always returns a uint8_t.*/
 template <typename T>
 class LogNorm : public LinearNorm<T> {
 private:
