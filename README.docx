@@ -9,7 +9,8 @@
 \mainpage libncpcolor
 
 \brief A library for creating pseudo-color images from netCDF files.
-
+\author Jonathan Beezley
+\version 0.0.0
 \section classes Classes
 The user of this library interacts with the following classes:
 
@@ -25,8 +26,8 @@ The standard usage involves the following steps:
 * -# instantiating a SliceType object
 * -# reading data from the variable with Variable::readSlice
 * -# normalizing the variable's data to a \p uint8_t array using a LinearNorm object
-* -# loading a predefined LookupTable with LookupTable::getLUT()
-* -# generating a raster image by calling LookupTable::makePColor()
+* -# loading a predefined LookupTable with LookupTable::getLUT
+* -# generating a raster image by calling LookupTable::makePColor
 * -# calling write_png to write the image to a png file
 
 See \ref basic.cpp for an example of this procedure.
