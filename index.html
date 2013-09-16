@@ -79,7 +79,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="title">libncpcolor </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p>A library for creating pseudo-color images from netCDF files.</p>
+<div class="textblock"><p>A library for creating pseudo-color images from netCDF files. </p>
+<dl class="section author"><dt>Author</dt><dd>Jonathan Beezley </dd></dl>
+<dl class="section version"><dt>Version</dt><dd>0.0.0 </dd></dl>
 <h1><a class="anchor" id="classes"></a>
 Classes</h1>
 <p>The user of this library interacts with the following classes:</p>
@@ -97,15 +99,15 @@ Classes</h1>
 <li>instantiating a <a class="el" href="class_slice_type.html" title="Defines a 2D slice from a 2+ dimension variable. ">SliceType</a> object</li>
 <li>reading data from the variable with <a class="el" href="class_variable.html#a7847212fbaec839b439d6b1757e55b45">Variable::readSlice</a></li>
 <li>normalizing the variable's data to a <code>uint8_t</code> array using a <a class="el" href="class_linear_norm.html" title="Defines an affine mapping from [minValue(),maxVal()] -&gt; [0,255]. ">LinearNorm</a> object</li>
-<li>loading a predefined <a class="el" href="class_lookup_table.html" title="Defines a mapping from [0,255] to RGBA colors. ">LookupTable</a> with <a class="el" href="class_lookup_table.html#adfce54bdcdcecf5ae2b0e091d3a8de32">LookupTable::getLUT()</a></li>
-<li>generating a raster image by calling <a class="el" href="class_lookup_table.html#a69fb8cbc7c61fe840f6f0e4031e4cf40">LookupTable::makePColor()</a></li>
+<li>loading a predefined <a class="el" href="class_lookup_table.html" title="Defines a mapping from [0,255] to RGBA colors. ">LookupTable</a> with <a class="el" href="class_lookup_table.html#adfce54bdcdcecf5ae2b0e091d3a8de32">LookupTable::getLUT</a></li>
+<li>generating a raster image by calling <a class="el" href="class_lookup_table.html#a69fb8cbc7c61fe840f6f0e4031e4cf40">LookupTable::makePColor</a></li>
 <li>calling write_png to write the image to a png file</li>
 </ol>
 <p>See <a class="el" href="basic_8cpp-example.html">basic.cpp</a> for an example of this procedure. </p>
 </div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Sep 16 2013 16:01:27 for libncpcolor by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Sep 16 2013 16:52:03 for libncpcolor by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.5
 </small></address>
