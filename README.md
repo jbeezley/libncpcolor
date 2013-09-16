@@ -1,7 +1,7 @@
 libncpcolor 
 ===========
 
-A library for creating pseudo-color images from netCDF files.
+A library for creating pseudo-color images from netCDF files.  See the [documentation](http://jbeezley.github.io/libncpcolor/index.html)
 
 Classes
 -------
@@ -24,4 +24,4 @@ The standard usage involves the following steps:
 7.  generating a raster image by calling LookupTable::makePColor()
 8.  calling write_png to write the image to a png file
 
-See examples/basic.cpp for an example of this procedure.
+See [examples/basic.cpp](http://jbeezley.github.io/libncpcolor/basic_8cpp-example.html) for an example of this procedure.
