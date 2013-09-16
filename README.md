@@ -1,7 +1,7 @@
 libncpcolor 
 ===========
 
-A library for creating pseudo-color images from netCDF files.  See the [documentation](http://jbeezley.github.io/libncpcolor/index.html)
+A library for creating pseudo-color images from netCDF files.  See the [documentation](http://jbeezley.github.io/libncpcolor/index.html).
 
 Classes
 -------
