@@ -166,8 +166,8 @@ protected:
     NcVar* var() const { return _var; } /*!< Returns a pointer to the netCDF variable.*/
 
 public:
-    typedef SliceType sliceType;           /*!< aaa */
-    typedef sliceType::shapeType shapeType;/*!< bbb */
+    typedef SliceType sliceType;        
+    typedef sliceType::shapeType shapeType;
     
     /*! Constructor
      * \param var Pointer to a netCDF variable */
