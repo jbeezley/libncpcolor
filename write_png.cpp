@@ -27,6 +27,8 @@ along with libncpcolor.  If not, see <http://www.gnu.org/licenses/>.
 
 #include<iostream>
 
+using namespace std;
+
 bool write_png(const string& filename, const size_t width, const size_t height, const uint8_t *raster) {
     
     FILE *fp = fopen(filename.c_str(), "wb");

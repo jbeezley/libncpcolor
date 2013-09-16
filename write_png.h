@@ -24,8 +24,20 @@ along with libncpcolor.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <string>
 
-using namespace std;
+/*! \file
+ *  \brief A simple wrapper around libpng to write a png image.
+ */
 
-bool write_png(const string& filename, const size_t width, const size_t height, const uint8_t *raster);
+/*!
+ * Write a pseudo color image like that created by LookupTable::makePColor into a png file.
+ * \param[in] filename The file name to write the image to
+ * \param[in] width The width of the image in pixels
+ * \param[in] height The height of the image in pixels
+ * \param[in] raster A pointer to the data
+ * \retval true if write successful
+ * \retval false if write failed
+ * \sa LookupTable::makePColor
+ */
+bool write_png(const std::string& filename, const size_t width, const size_t height, const uint8_t *raster);
 
 #endif

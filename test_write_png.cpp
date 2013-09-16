@@ -23,6 +23,8 @@ along with libncpcolor.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "write_png.h"
 
+using namespace std;
+
 uint8_t pixel_foo(const int i) {
     int j = (i % 512) - 256;
     if(j<0) j = -j;
