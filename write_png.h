@@ -23,6 +23,7 @@ along with libncpcolor.  If not, see <http://www.gnu.org/licenses/>.
 #define WRITE_PNG_H
 
 #include <string>
+#include <stdint.h>
 
 /*! \file
  *  \brief A simple wrapper around libpng to write a png image.

@@ -13,6 +13,9 @@
 #include <iostream>
 #include <sstream>
 #include <limits.h>
+
+#pragma GCC diagnostic ignored "-Wlong-long"
+
 #include "netcdf.h"
 
 // Documentation warned this might change and now it has, for

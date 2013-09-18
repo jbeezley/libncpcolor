@@ -81,7 +81,9 @@ public:
     }
 
     /*! Copy constructor. */
-    LinearNorm(const LinearNorm<T>& other) : LinearNorm<T>(other._minVal,other._maxVal) {}
+    LinearNorm(const LinearNorm<T>& other) : _minVal(other._minVal), 
+                                             _maxVal(other._maxVal),
+                                             _range(other._range) {}
 
     /*! Set the minimum value of the mapping. */
     void setMinVal(const T& minVal) {
@@ -176,7 +178,7 @@ public:
     LogNorm(const T& minVal, const T& maxVal) : LinearNorm<T>(minVal,maxVal) {
 //        LinearNorm<T>::setMinVal(fmax(_minCutoff,minVal));
     }
-    LogNorm(const LogNorm<T>& other) : LogNorm<T>(other._minVal,other._maxVal) {}
+    LogNorm(const LogNorm<T>& other) : LinearNorm<T>(other._minVal,other._maxVal) {}
     void setMinVal(const T& minVal) {
         //LinearNorm<T>::setMinVal(fmax(_minCutoff,minVal));
     }

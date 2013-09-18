@@ -60,7 +60,7 @@ bool write_png(const string& filename, const size_t width, const size_t height, 
    
     png_write_info(png_ptr, info_ptr);
     
-    png_bytep row_pointer[height];
+    png_bytep *row_pointer = new png_bytep[height];
     
     for(size_t i=0; i<height; i++) {
         row_pointer[i] = (png_bytep) &(raster[i*width*4]);
@@ -73,6 +73,7 @@ bool write_png(const string& filename, const size_t width, const size_t height, 
     png_destroy_write_struct(&png_ptr, &info_ptr);
 
     fclose(fp);
+    delete [] row_pointer;
     return true;
 }
 

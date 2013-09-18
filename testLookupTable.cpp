@@ -39,7 +39,7 @@ int main() {
    
     const size_t N = 1000;
     uint8_t A[N];
-    uint8_t B[LookupTable::imageSize(N)];
+    uint8_t *B = new uint8_t[LookupTable::imageSize(N)];
     
     for(size_t i=0; i<N; i++) A[i] = i % 256;
     dp = opendir(dirname.c_str());
@@ -85,5 +85,6 @@ int main() {
     }
     if(!hasError)
         cout << "Success!" << endl;
+    delete [] B;
     return hasError;
 }

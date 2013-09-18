@@ -77,6 +77,11 @@ void help(){
 
 static bool verbose_output = false;
 
+void print_version() {
+    printf("nc2pcolor version 0.0.0\n");
+    exit(1);
+}
+
 void list_colors() {
     printf("Color tables available:\n");
     for(int i=0; i<lut::NTables; i++) {
@@ -104,6 +109,7 @@ bool parse_index(const string& index, int& n, int vals[_MAX_VARDIMS]) {
         k=i+1;
         if(i >= index.size()) return true;
     }
+    return false;
 }
 
 bool write_raster(const string& filename,
@@ -131,7 +137,7 @@ bool write_raster(const string& filename,
     }
     if(xDim >= 0) slice.setXDim(xDim);
     if(yDim >= 0) slice.setYDim(yDim);
-    for(int i=0;i<slice.size(); i++) slice[i] = index[i];
+    for(unsigned int i=0;i<slice.size(); i++) slice[i] = index[i];
     if(!slice.isValid()) {
         cout << "Invalid slice description: " << endl;
         cout << slice << endl;
@@ -182,7 +188,6 @@ int main(int argc, char *argv[]){
     
     // Here flags (options without arguments) and arguments with defined type
     char verbose=0;
-    char version=0;
     int xDim = -1;
     int yDim = -1;
     string output("output.");
@@ -235,7 +240,7 @@ int main(int argc, char *argv[]){
                 break;
 
             case 'V' : // -V or --version
-                version=1;
+                print_version();
                 break;
 
             case 'x' : // -x or --xDim

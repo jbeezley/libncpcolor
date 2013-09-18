@@ -57,7 +57,7 @@ bool write_image(const string& filename, const size_t width, const size_t height
     }
     else {
         cout << "Failed writing " + filename << endl;
-        exit(1);
+        return false;
     }
     delete [] raster;
     return true;
@@ -83,7 +83,7 @@ int main() {
                             "2048_1024",
                             "511_247" };
 
-
+    bool success = true;
     for(int is = 0; is < 5; is++) {
         width = sizes[is][0];
         height = sizes[is][1];
@@ -91,29 +91,31 @@ int main() {
         filename = "red";
         filename += snames[is];
         filename += ".png";
-        write_image(filename, width, height, red);
+        success &= write_image(filename, width, height, red);
 
         filename = "green";
         filename += snames[is];
         filename += ".png";
-        write_image(filename, width, height, green);
+        success &= write_image(filename, width, height, green);
         
         filename = "blue";
         filename += snames[is];
         filename += ".png";
-        write_image(filename, width, height, blue);
+        success &= write_image(filename, width, height, blue);
         
         filename = "grey";
         filename += snames[is];
         filename += ".png";
-        write_image(filename, width, height, grey);
+        success &= write_image(filename, width, height, grey);
         
         filename = "gradient";
         filename += snames[is];
         filename += ".png";
-        write_image(filename, width, height, NULL);
+        success &= write_image(filename, width, height, NULL);
     }
 
-
-    exit(0);
+    if(success) 
+        return(0);
+    else
+        return(1);
 }

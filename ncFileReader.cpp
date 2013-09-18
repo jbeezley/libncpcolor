@@ -68,21 +68,25 @@ size_t BaseVariable::size() const {
 }
 
 size_t BaseVariable::sliceSize(const BaseVariable::sliceType& slice) const {
-    long count[nDims()];
+    long *count = new long[nDims()];
     slice.getCount(count);
     size_t N=1;
     for(unsigned int i=0; i<nDims(); i++) N = N*count[i];
+    delete [] count;
     return N;
 }
 
 template<typename T>
 bool Variable<T>::readSlice(const Variable<T>::sliceType& slice, double* a) const {
-    long count[nDims()], start[nDims()];
+    long *count = new long[nDims()];
+    long *start = new long[nDims()];
     slice.getStart(start);
     slice.getCount(count);
     var()->set_cur(start);
     var()->get(a, count);
     transpose(slice, a);
+    delete [] count;
+    delete [] start;
     return true;
 }
 
@@ -184,7 +188,7 @@ const BaseVariable* NcSliceFile::getVariable(const string& varname) const {
 ostream& operator<<(ostream& out, const BaseVariable& var) {
     out << var.myType() << " " << var.name() << "[";
     if(var.nDims() > 0) out << var.shape()[0];
-    for(int i = 1; i<var.nDims(); i++) out << ", " << var.shape()[i];
+    for(unsigned int i = 1; i<var.nDims(); i++) out << ", " << var.shape()[i];
     out << "]";
     return out;
 }
@@ -201,7 +205,7 @@ return out;
 
 ostream& operator<<(ostream& out, const SliceType& slice) {
     out << "[";
-    for(int i = 0; i< slice.size(); i++) {
+    for(unsigned int i = 0; i< slice.size(); i++) {
         if(i == slice.xDim() || i == slice.yDim()) {
             out << "0:" << slice.shape()[i];
         }
@@ -216,7 +220,7 @@ ostream& operator<<(ostream& out, const SliceType& slice) {
 
 ostream& operator<<(ostream& out, const SliceType::shapeType& shape) {
     out << "[";
-    for(int i = 0; i<shape.size(); i++) {
+    for(unsigned int i = 0; i<shape.size(); i++) {
         out << shape[i];
         if(i<shape.size() - 1) out << ", ";
     }
