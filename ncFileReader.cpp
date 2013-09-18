@@ -123,6 +123,8 @@ NcSliceFile::NcSliceFile(const string& fileName) : _file(fileName.c_str()), _fil
                 baseVar = new VariableFloat(var);
             else if(type == ncDouble)
                 baseVar = new VariableDouble(var);
+            else
+                baseVar = NULL;
             _variables[name] = baseVar;
         }
     }
