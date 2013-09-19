@@ -115,6 +115,8 @@ NcSliceFile::NcSliceFile(const string& fileName) : _file(fileName.c_str()), _fil
             string name(var->name());
             if(type == ncByte)
                 baseVar = new VariableByte(var);
+            else if(type == ncShort)
+                baseVar = new VariableShort(var);
             else if(type == ncInt)
                 baseVar = new VariableInt(var);
             else if(type == ncLong)
@@ -124,7 +126,7 @@ NcSliceFile::NcSliceFile(const string& fileName) : _file(fileName.c_str()), _fil
             else if(type == ncDouble)
                 baseVar = new VariableDouble(var);
             else
-                baseVar = NULL;
+                assert(0);
             _variables[name] = baseVar;
         }
     }
@@ -139,6 +141,8 @@ NcSliceFile::NcSliceFile(const NcSliceFile& file) : _file(file._fileName.c_str()
             string name(var->name());
             if(type == ncByte)
                 baseVar = new VariableByte(var);
+            else if(type == ncShort)
+                baseVar = new VariableShort(var);
             else if(type == ncInt)
                 baseVar = new VariableInt(var);
             else if(type == ncLong)
