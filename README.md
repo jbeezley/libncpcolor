@@ -25,3 +25,7 @@ The standard usage involves the following steps:
 8.  calling [write_png](http://jbeezley.github.io/libncpcolor/write__png_8h.html#a022b4f58ce16a98710dc042ccb1cc927) to write the image to a png file
 
 See [examples/basic.cpp](http://jbeezley.github.io/libncpcolor/basic_8cpp-example.html) for an example of this procedure.
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/jbeezley/libncpcolor/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
